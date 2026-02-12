@@ -6,7 +6,7 @@ import os
 
 def PageContents():
     st.title("2ft Custom Prosthesis")
-    height = st.slider("Height (cm)", 20, 50)
+    height = st.slider("Height (cm)", 20.0, 50.0)
     foot_length = st.slider("Height (cm)", 12, 30)
     foot_width = st.slider("Foot Width", 5, 12)
     right = st.toggle("Right foot?")
@@ -115,3 +115,4 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
