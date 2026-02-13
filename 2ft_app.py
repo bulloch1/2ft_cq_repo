@@ -14,16 +14,18 @@ def PageContents():
     return height, foot_length, foot_width, right
 
 def GetShape():
+    # required for stremlit page
     height, foot_length, foot_width, right = PageContents()
-
     weight = 100
+    pylon_radius = 30
+
+    ## given by streamlit page
     # foot_length = 250
     # foot_width = 100
     # height = 250
-    pylon_radius = 30
     # right = True
     
-    foot_height = 25 #change to support load or match trends
+    foot_height = 25 #TODO change to support load or match trends
     ankle_height = 85 # height where foot meets pylon
     toe_height = 35
     pylon_height = height - foot_height
@@ -34,8 +36,8 @@ def GetShape():
     
     lateral_vector = (ankle_radius - 0.6*foot_width, ankle_radius - 0.66*foot_length)
     toe_vector = (1, -0.7)
-    
-    
+
+    #defines back of the heel curvature
     heel_spline_pts = [
         (heel_radius, heel_radius), #right side of heel
         (0.5*heel_radius, 0.2*heel_radius),
@@ -50,29 +52,24 @@ def GetShape():
         (0,1), #tangent with medial edge
     ]
     
-    #Big toe part
-    big_toe_pt = (-0.1 * ankle_radius, foot_length*0.99)# TODO make toe end exactly at foot_length
-    medial_toe_spline_pts = [
+    #Big toe spline part
+    big_toe_pt = (-0.3*heel_radius, foot_length)# TODO make toe end exactly at foot_length
+    little_toe_pt = (0, foot_length*0.99)
+    toe_spline_pts = [
         (-ankle_radius, foot_length - (toe_radius)), #
         (big_toe_pt),
-    ]
-    
-    medial_toe_tangents = [
-        (0, 1),
-        (toe_vector),
-    ]
-    
-    #little toes part
-    lateral_toe_spline_pts = [ #TODO make lateral edge end exactly at 0.6foot_width
-        (big_toe_pt),
+        (little_toe_pt),
         (0.6*foot_width, 0.66*foot_length),
     ]
     
-    lateral_toe_tangents = [
+    toe_tangents = [
+        (0, 1),
+        (1, 0),
         (toe_vector),
         (lateral_vector),
     ]
-    
+
+    #defines top of foot
     arch_spline_pts = [
         (foot_length, toe_height), #
         (foot_length*0.7, toe_height*1.2),
@@ -85,49 +82,53 @@ def GetShape():
         (None),
     ]
     
-    arch = (
-        cq.Workplane("right")
-        .spline(arch_spline_pts, arch_tangents)
-        .lineTo(foot_length*2, ankle_height)
-        .lineTo(foot_length*2, toe_height)
-        .close()
-        .extrude(foot_width, both = True)
-    )
+    def getArch():
+        arch = (
+            cq.Workplane("right")
+            .spline(arch_spline_pts, arch_tangents)
+            .lineTo(foot_length*2, ankle_height)
+            .lineTo(foot_length*2, toe_height)
+            .close()
+            .extrude(foot_width, both = True)
+        )
+        return arch
     
-    arch_face = arch.faces("<Y").val()
-    
-    #foot
-    result = (
-        cq.Workplane("top")
-        .spline(heel_spline_pts, heel_tangents)
-        .lineTo(-ankle_radius, foot_length - toe_radius)
-        .spline(medial_toe_spline_pts, medial_toe_tangents)
-        .spline(lateral_toe_spline_pts, lateral_toe_tangents)
-        .close()
-        .extrude(ankle_height)
-        .cut(arch)
-        .faces(">Y[1]")
-        .fillet(20)
-        .faces("<Y")
-        .fillet(5)
-    )
-    
-    #pylon
-    result = (
-        result.faces(">Y")
-        .edges()
-        .toPending()
-        .offset2D(0)
-        .workplane(offset = pylon_height)
-        .center(0, foot_length*0.2)
-        .ellipse(pylon_radius, pylon_radius*1.2)
-        .loft(combine = True)
-    )
-    
-    if (right == False):
-        result = result.mirror("YZ")
+    def Foot():
+        foot = (
+            cq.Workplane("top")
+            .spline(heel_spline_pts, heel_tangents)
+            .lineTo(-ankle_radius, foot_length - toe_radius)
+            .spline(toe_spline_pts, toe_tangents)
+            # .spline(lateral_toe_spline_pts, lateral_toe_tangents)
+            .close()
+            .extrude(ankle_height)
+            .cut(getArch())
+            .faces("<<Y[1]")
+            .edges("not |X")
+            .fillet(toe_height/2)
+            .faces("<Y")
+            .fillet(5)
+        )
         
-    return result
+        
+        #pylon
+        foot = (
+            foot.faces(">Y")
+            .edges()
+            .toPending()
+            .offset2D(0)
+            .workplane(offset = pylon_height)
+            .center(0, foot_length*0.2)
+            .ellipse(pylon_radius, pylon_radius*1.2)
+            .loft(combine = True)
+        )
+        
+        if (right == False):
+            foot = foot.mirror("YZ")
+        
+        return foot
+    return Foot()
+
 
 def ExportSTL(result):
     tmp_path = None
@@ -149,6 +150,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
