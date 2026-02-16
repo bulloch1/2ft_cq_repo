@@ -15,15 +15,15 @@ def PageContents():
 
 def GetShape():
     # # required for streamlit page
-    # height, foot_length, foot_width, right = PageContents()
+    height, foot_length, foot_width, right = PageContents()
     weight = 100
     pylon_radius = 30
 
     # given by streamlit page
-    foot_length = 250
-    foot_width = 100
-    height = 250
-    right = True
+    # foot_length = 250
+    # foot_width = 100
+    # height = 250
+    # right = True
     
     # foot_height = 25 #TODO change to support load or match trends
     ankle_height = 85 # height where foot meets pylon
@@ -204,6 +204,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
