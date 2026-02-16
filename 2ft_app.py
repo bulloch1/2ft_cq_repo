@@ -14,25 +14,33 @@ def PageContents():
     return height, foot_length, foot_width, right
 
 def GetShape():
-    # required for stremlit page
-    height, foot_length, foot_width, right = PageContents()
+    # # required for streamlit page
+    # height, foot_length, foot_width, right = PageContents()
     weight = 100
     pylon_radius = 30
 
-    ## given by streamlit page
-    # foot_length = 250
-    # foot_width = 100
-    # height = 250
-    # right = True
+    # given by streamlit page
+    foot_length = 250
+    foot_width = 100
+    height = 250
+    right = True
     
-    foot_height = 25 #TODO change to support load or match trends
+    # foot_height = 25 #TODO change to support load or match trends
     ankle_height = 85 # height where foot meets pylon
     toe_height = 35
-    pylon_height = height - foot_height
+    pylon_height = height - ankle_height
     ankle_radius = 0.4 * foot_width
     toe_radius = 0.6 * ankle_radius
     heel_radius = 0.4 * foot_width
+    pylon_offset = pylon_radius*1.2 #distance top center of pylon is offset forward from heel
     # t_offset = 0.01
+    
+    #pyramid adapter
+    ball_base_radius = 47.8/2
+    ball_depth = 10.7
+    dove_depth = 11.1
+    dove_tail_width = 18.3
+    dove_base_width = 14
     
     lateral_vector = (ankle_radius - 0.6*foot_width, ankle_radius - 0.66*foot_length)
     toe_vector = (1, -0.7)
@@ -82,6 +90,7 @@ def GetShape():
         (None),
     ]
     
+    
     def getArch():
         arch = (
             cq.Workplane("right")
@@ -92,6 +101,54 @@ def GetShape():
             .extrude(foot_width, both = True)
         )
         return arch
+    
+    def CutPyramidAdapter(foot):
+        adapter = (
+            cq.Workplane("right")
+            .center(pylon_offset, pylon_height+ankle_height)
+            .lineTo(24, 0) # build ball joint profile
+            .threePointArc((17, -7.5), (11.4, -10.8))
+            .lineTo(0, -10.8)
+            .close()
+            .revolve(90, (0, 0), (0, -1)) #revolve ball joint
+            .center(0, -ball_depth)
+            .lineTo(dove_base_width/2, 0)#dove tail outline
+            .lineTo(dove_tail_width/2, -dove_depth)
+            .lineTo(0, -dove_depth)
+            .close()
+            .extrude(dove_base_width/2)
+            .faces("<X")
+            .extrude(-pylon_radius*2)
+        )
+        adapter = (
+            adapter
+            .mirror(adapter.faces(">Z"), union = True)
+            .faces("<Y")
+            .fillet(2)
+            .faces("<<Y[4]")
+            .edges("|X")
+            .fillet(1)
+        )
+        
+        
+        foot = foot.cut(adapter)
+        # show_object(adapter)
+        # show_object(foot)
+        # return adapter
+        return foot
+    
+    def AddPylon(foot):
+        foot = (
+            foot.faces(">Y")
+            .edges()
+            .toPending()
+            .offset2D(0)
+            .workplane(offset = pylon_height)
+            .center(0, pylon_offset)
+            .ellipse(pylon_radius, pylon_radius*1.2)
+            .loft(combine = True)
+        )
+        return foot
     
     def Foot():
         foot = (
@@ -109,25 +166,22 @@ def GetShape():
             .faces("<Y")
             .fillet(5)
         )
+        return foot
         
-        
-        #pylon
-        foot = (
-            foot.faces(">Y")
-            .edges()
-            .toPending()
-            .offset2D(0)
-            .workplane(offset = pylon_height)
-            .center(0, foot_length*0.2)
-            .ellipse(pylon_radius, pylon_radius*1.2)
-            .loft(combine = True)
-        )
+    def AssembleFoot():
+        foot = Foot()
+        foot = AddPylon(foot)
+        foot = CutPyramidAdapter(foot)
         
         if (right == False):
             foot = foot.mirror("YZ")
         
         return foot
-    return Foot()
+    
+    foot = AssembleFoot()
+    return foot
+
+
 
 
 def ExportSTL(result):
@@ -150,6 +204,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
