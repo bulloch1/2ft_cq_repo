@@ -49,7 +49,22 @@ def GetShape():
         predicted_ankle_height = foot_length*0.3 # height where foot meets pylon
         predicted_toe_height = predicted_ankle_height*0.5
         predicted_pylon_offset = predicted_pylon_radius*1.2
+        
+        if (advanced_options):
+            pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2)
+            ankle_height = st.slider("Ankle Height", predicted_ankle_height * 0.8, predicted_ankle_height * 1.2)
+            toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2)
+            pylon_offest = st.slider("forward leg offset", predicted_pylon_offset * 0.8, predicted_pylon_offset * 1.2)
+        else:
+            ankle_height = predicted_ankle_height
+            toe_height = predicted_toe_height
+            pylon_offset = predicted_pylon_offset
+            pylon_radius = predicted_pylon_radius
         return ankle_height, toe_height, pylon_offset, pylon_radius
+
+
+    # Start of CadQuery script
+
     height, foot_length, foot_width, weight, right, advanced_options  = PageContents()
     heel_radius = 0.4 * foot_width
     ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
@@ -221,6 +236,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
