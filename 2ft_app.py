@@ -47,6 +47,7 @@ def getAdvancedMeasurements():
     predicted_ankle_height = foot_length*0.3 # height where foot meets pylon
     predicted_toe_height = ankle_height*0.5
     predicted_pylon_offset = pylon_radius*1.2
+    
     if (advanced_options):
         pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2)
         ankle_height = st.slider("Ankle Height", predicted_ankle_radius * 0.8, predicted_ankle_radius * 1.2)
@@ -57,10 +58,30 @@ def getAdvancedMeasurements():
         toe_height = predicted_toe_height
         pylon_offset = predicted_pylon_offset
         pylon_radius = predicted_pylon_radius
+
+    
     return ankle_height, toe_height, pylon_offset, pylon_radius
     
 
 def GetShape():
+    def getAdvancedMeasurements():
+        predicted_pylon_radius = 25 #TODO make this reflect weight or proportional to given measurement
+        predicted_ankle_height = foot_length*0.3 # height where foot meets pylon
+        predicted_toe_height = ankle_height*0.5
+        predicted_pylon_offset = pylon_radius*1.2
+        
+        if (advanced_options):
+            pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2)
+            ankle_height = st.slider("Ankle Height", predicted_ankle_radius * 0.8, predicted_ankle_radius * 1.2)
+            toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2)
+            pylon_offest = st.slider("forward leg offset", predicted_pylon_offset * 0.8, predicted_pylon_offset * 1.2)
+        else:
+            ankle_height = predicted_ankle_height
+            toe_height = predicted_toe_height
+            pylon_offset = predicted_pylon_offset
+            pylon_radius = predicted_pylon_radius
+        return ankle_height, toe_height, pylon_offset, pylon_radius
+    
     # required for streamlit page
     height, foot_length, foot_width, weight, right, advanced_options  = PageContents()
 
@@ -72,17 +93,11 @@ def GetShape():
     # right = True
     # advanced_options = False
     
-    # if(not advanced_options):
-    #     pylon_radius = 25
-    #     ankle_height = foot_length*0.3 # height where foot meets pylon
-    #     toe_height = ankle_height*0.5
-    #     pylon_offset = pylon_radius*1.2 #distance top center of pylon is offset forward from heel
-    # else:
-    #     #uncomment for streamlit page
+    heel_radius = 0.4 * foot_width
     ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
 
     pylon_height = height - ankle_height
-    heel_radius = 0.4 * foot_width
+    
     toe_radius = 0.6 * heel_radius
 
     #pyramid adapter
@@ -252,6 +267,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
