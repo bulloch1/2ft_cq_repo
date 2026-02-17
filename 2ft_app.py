@@ -39,7 +39,6 @@ def PageContents():
         weight = st.slider("Weight (lbs)", weight_lb*lb_per_kg, weight_ub*lb_per_kg)
     right = st.toggle("Right foot")
     advanced_options = st.toggle("Use advanced measurements")
-    if advanced_options:
         
     return height, foot_length, foot_width, weight, right, advanced_options
 
@@ -253,6 +252,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
