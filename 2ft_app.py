@@ -41,26 +41,6 @@ def PageContents():
     advanced_options = st.toggle("Use advanced measurements")
         
     return height, foot_length, foot_width, weight, right, advanced_options
-
-def getAdvancedMeasurements():
-    predicted_pylon_radius = 25 #TODO make this reflect weight or proportional to given measurement
-    predicted_ankle_height = foot_length*0.3 # height where foot meets pylon
-    predicted_toe_height = ankle_height*0.5
-    predicted_pylon_offset = pylon_radius*1.2
-    
-    if (advanced_options):
-        pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2)
-        ankle_height = st.slider("Ankle Height", predicted_ankle_radius * 0.8, predicted_ankle_radius * 1.2)
-        toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2)
-        pylon_offest = st.slider("forward leg offset", predicted_pylon_offset * 0.8, predicted_pylon_offset * 1.2)
-    else:
-        ankle_height = predicted_ankle_height
-        toe_height = predicted_toe_height
-        pylon_offset = predicted_pylon_offset
-        pylon_radius = predicted_pylon_radius
-
-    
-    return ankle_height, toe_height, pylon_offset, pylon_radius
     
 
 def GetShape():
@@ -72,7 +52,7 @@ def GetShape():
         
         if (advanced_options):
             pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2)
-            ankle_height = st.slider("Ankle Height", predicted_ankle_radius * 0.8, predicted_ankle_radius * 1.2)
+            ankle_height = st.slider("Ankle Height", predicted_ankle_height * 0.8, predicted_ankle_height * 1.2)
             toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2)
             pylon_offest = st.slider("forward leg offset", predicted_pylon_offset * 0.8, predicted_pylon_offset * 1.2)
         else:
@@ -107,7 +87,7 @@ def GetShape():
     dove_tail_width = 18.3
     dove_base_width = 14
     
-    lateral_vector = (ankle_radius - 0.6*foot_width, ankle_radius - 0.66*foot_length)
+    lateral_vector = (heel_radius - 0.6*foot_width, heel_radius - 0.66*foot_length)
     toe_vector = (1, -0.7)
 
     #defines back of the heel curvature
@@ -129,7 +109,7 @@ def GetShape():
     big_toe_pt = (-0.3*heel_radius, foot_length)# TODO make toe end exactly at foot_length
     little_toe_pt = (0, foot_length*0.99)
     toe_spline_pts = [
-        (-ankle_radius, foot_length - (toe_radius)), #
+        (-heel_radius, foot_length - (toe_radius)), #
         (big_toe_pt),
         (little_toe_pt),
         (0.6*foot_width, 0.66*foot_length),
@@ -213,7 +193,7 @@ def GetShape():
         foot = (
             cq.Workplane("top")
             .spline(heel_spline_pts, heel_tangents)
-            .lineTo(-ankle_radius, foot_length - toe_radius)
+            .lineTo(-heel_radius, foot_length - toe_radius)
             .spline(toe_spline_pts, toe_tangents)
             .close()
             .extrude(ankle_height)
@@ -267,6 +247,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
