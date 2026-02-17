@@ -27,7 +27,7 @@ def PageContents():
         predicted_width = 0.32 * foot_length + predicted_width_intercept
         width_lb = predicted_width * 0.6
         width_ub = predicted_width * 1.4
-        foot_width = st.slider("Foot Width", width_lb, width_ub, value = predicted_width)
+        foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
         weight = st.slider("Weight (kg)", weight_lb, weight_ub)
     else:
         height = st.slider("Height (in)", height_lb*in_per_mm, height_ub*in_per_mm)
@@ -46,7 +46,7 @@ def PageContents():
 
 def GetShape():
     def getAdvancedMeasurements():
-        predicted_pylon_radius = 25 #TODO make this reflect weight or proportional to given measurement
+        predicted_pylon_radius = 30 #TODO make this reflect weight or proportional to given measurement
         predicted_ankle_height = foot_length*0.3 # height where foot meets pylon
         predicted_toe_height = predicted_ankle_height*0.5
         predicted_pylon_offset = predicted_pylon_radius*1.2
@@ -65,14 +65,6 @@ def GetShape():
     
     # required for streamlit page
     height, foot_length, foot_width, weight, right, advanced_options  = PageContents()
-
-    # # given by streamlit page
-    # weight = 100
-    # foot_length = 120
-    # foot_width = 50
-    # height = 200
-    # right = True
-    # advanced_options = False
     
     heel_radius = 0.4 * foot_width
     ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
@@ -248,6 +240,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
