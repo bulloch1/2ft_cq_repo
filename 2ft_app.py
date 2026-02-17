@@ -41,8 +41,7 @@ def PageContents():
     right = st.toggle("Right foot")
     advanced_options = st.toggle("Use advanced measurements")
         
-    return height, foot_length, foot_width, weight, right, advanced_options
-    
+    return height, foot_length, foot_width, weight, right, advanced_options    
 
 def GetShape():
     def getAdvancedMeasurements():
@@ -51,7 +50,7 @@ def GetShape():
         predicted_toe_height = predicted_ankle_height*0.5
         predicted_pylon_offset = predicted_pylon_radius*1.2
         return ankle_height, toe_height, pylon_offset, pylon_radius
-    
+        
     height, foot_length, foot_width, weight, right, advanced_options  = PageContents()
     heel_radius = 0.4 * foot_width
     ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
@@ -223,6 +222,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
