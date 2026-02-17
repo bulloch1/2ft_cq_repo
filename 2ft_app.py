@@ -51,26 +51,17 @@ def GetShape():
         predicted_toe_height = predicted_ankle_height*0.5
         predicted_pylon_offset = predicted_pylon_radius*1.2
         
-        if (advanced_options):
-            pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2)
-            ankle_height = st.slider("Ankle Height", predicted_ankle_height * 0.8, predicted_ankle_height * 1.2)
-            toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2)
-            pylon_offest = st.slider("forward leg offset", predicted_pylon_offset * 0.8, predicted_pylon_offset * 1.2)
-        else:
-            ankle_height = predicted_ankle_height
-            toe_height = predicted_toe_height
-            pylon_offset = predicted_pylon_offset
-            pylon_radius = predicted_pylon_radius
+        def getAdvancedMeasurements():
+        pylon_radius = 30 #TODO make this reflect weight or proportional to given measurement
+        ankle_height = foot_length*0.3 # height where foot meets pylon
+        toe_height = ankle_height*0.5
+        pylon_offset = pylon_radius*1.2
         return ankle_height, toe_height, pylon_offset, pylon_radius
     
-    # required for streamlit page
     height, foot_length, foot_width, weight, right, advanced_options  = PageContents()
-    
     heel_radius = 0.4 * foot_width
     ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
-
     pylon_height = height - ankle_height
-    
     toe_radius = 0.6 * heel_radius
 
     #pyramid adapter
@@ -212,8 +203,6 @@ def GetShape():
     foot = AssembleFoot()
     return foot
 
-
-
 #end of CadQuery script
 
 
@@ -240,6 +229,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
