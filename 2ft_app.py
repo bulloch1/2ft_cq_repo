@@ -67,7 +67,7 @@ def GetShape():
     def getAdvancedMeasurements():
         predicted_pylon_radius = 25 #TODO make this reflect weight or proportional to given measurement
         predicted_ankle_height = foot_length*0.3 # height where foot meets pylon
-        predicted_toe_height = ankle_height*0.5
+        predicted_toe_height = predicted_ankle_height*0.5
         predicted_pylon_offset = pylon_radius*1.2
         
         if (advanced_options):
@@ -267,6 +267,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
