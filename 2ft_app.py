@@ -30,13 +30,14 @@ def PageContents():
         foot_width = st.slider("Foot Width", width_lb, width_ub, value = predicted_width)
         weight = st.slider("Weight (kg)", weight_lb, weight_ub)
     else:
-        height = st.slider("Height (mm)", height_lb*in_per_mm, height_ub*in_per_mm)
-        foot_length = st.slider("Foot Length (mm)", foot_length_lb*in_per_mm, foot_length_ub*in_per_mm)
+        height = st.slider("Height (in)", height_lb*in_per_mm, height_ub*in_per_mm)
+        foot_length = st.slider("Foot Length (in)", foot_length_lb*in_per_mm, foot_length_ub*in_per_mm)
         predicted_width = 0.32 * foot_length + predicted_width_intercept*in_per_mm
-        width_ub = predicted_width * 0.6
-        width_lb = predicted_width * 1.4
-        foot_width = st.slider("Foot Width", width_lb, width_ub, value = predicted_width)
+        width_lb = predicted_width * 0.6
+        width_ub = predicted_width * 1.4
+        foot_width = st.slider("Foot Width (in)", width_lb, width_ub, value = predicted_width)
         weight = st.slider("Weight (lbs)", weight_lb*lb_per_kg, weight_ub*lb_per_kg)
+        
     right = st.toggle("Right foot")
     advanced_options = st.toggle("Use advanced measurements")
         
