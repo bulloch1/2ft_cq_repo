@@ -50,12 +50,6 @@ def GetShape():
         predicted_ankle_height = foot_length*0.3 # height where foot meets pylon
         predicted_toe_height = predicted_ankle_height*0.5
         predicted_pylon_offset = predicted_pylon_radius*1.2
-        
-        def getAdvancedMeasurements():
-        pylon_radius = 30 #TODO make this reflect weight or proportional to given measurement
-        ankle_height = foot_length*0.3 # height where foot meets pylon
-        toe_height = ankle_height*0.5
-        pylon_offset = pylon_radius*1.2
         return ankle_height, toe_height, pylon_offset, pylon_radius
     
     height, foot_length, foot_width, weight, right, advanced_options  = PageContents()
@@ -229,6 +223,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
