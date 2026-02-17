@@ -5,36 +5,87 @@ import tempfile
 import os
 
 def PageContents():
+    #standard bounds in metric (mm, kg)
+    height_lb = 200
+    height_ub = 500
+    foot_length_lb = 120
+    foot_length_ub = 280
+    weight_lb = 20
+    weight_ub = 100
+    predicted_width_intercept = 17.3
+
+    #conversion factors
+    in_per_mm = 1/25.4
+    lb_per_kg = 2.20462
+
+    #page elements
     st.title("2ft Custom Prosthesis")
-    height = st.slider("Height (cm)", 20.0, 50.0)*10
-    foot_length = st.slider("Foot Length (cm)", 12.0, 30.0)*10
-    foot_width = st.slider("Foot Width", 5.0, 12.0)*10
-    right = st.toggle("Right foot?")
+    metric = st.toggle("Use metreic units (mm, kg)", value = True)
+    if metric:
+        height = st.slider("Height (mm)", height_lb, height_ub)
+        foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub)
+        predicted_width = 0.32 * foot_length + predicted_width_intercept
+        width_ub = predicted_width * 0.6
+        width_lb = predicted_width * 1.4
+        foot_width = st.slider("Foot Width", width_lb, width_ub, value = predicted_width)
+        weight = st.slider("Weight (kg)", weight_lb, weight_ub)
+    else:
+        height = st.slider("Height (mm)", height_lb*in_per_mm, height_ub*in_per_mm)
+        foot_length = st.slider("Foot Length (mm)", foot_length_lb*in_per_mm, foot_length_ub*in_per_mm)
+        predicted_width = 0.32 * foot_length + predicted_width_intercept*in_per_mm
+        width_ub = predicted_width * 0.6
+        width_lb = predicted_width * 1.4
+        foot_width = st.slider("Foot Width", width_lb, width_ub, value = predicted_width)
+        weight = st.slider("Weight (lbs)", weight_lb*lb_per_kg, weight_ub*lb_per_kg)
+    right = st.toggle("Right foot")
+    advanced_options = st.toggle("Use advanced measurements")
+    if advanced_options:
+        
+    return height, foot_length, foot_width, weight, right, advanced_options
+
+def getAdvancedMeasurements():
+    predicted_pylon_radius = 25 #TODO make this reflect weight or proportional to given measurement
+    predicted_ankle_height = foot_length*0.3 # height where foot meets pylon
+    predicted_toe_height = ankle_height*0.5
+    predicted_pylon_offset = pylon_radius*1.2
+    if (advanced_options):
+        pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2)
+        ankle_height = st.slider("Ankle Height", predicted_ankle_radius * 0.8, predicted_ankle_radius * 1.2)
+        toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2)
+        pylon_offest = st.slider("forward leg offset", predicted_pylon_offset * 0.8, predicted_pylon_offset * 1.2)
+    else:
+        ankle_height = predicted_ankle_height
+        toe_height = predicted_toe_height
+        pylon_offset = predicted_pylon_offset
+        pylon_radius = predicted_pylon_radius
+    return ankle_height, toe_height, pylon_offset, pylon_radius
     
-    return height, foot_length, foot_width, right
 
 def GetShape():
-    # # required for streamlit page
-    height, foot_length, foot_width, right = PageContents()
-    weight = 100
-    pylon_radius = 30
+    # required for streamlit page
+    height, foot_length, foot_width, weight, right, advanced_options  = PageContents()
 
-    # given by streamlit page
-    # foot_length = 250
-    # foot_width = 100
-    # height = 250
+    # # given by streamlit page
+    # weight = 100
+    # foot_length = 120
+    # foot_width = 50
+    # height = 200
     # right = True
+    # advanced_options = False
     
-    # foot_height = 25 #TODO change to support load or match trends
-    ankle_height = 85 # height where foot meets pylon
-    toe_height = 35
+    # if(not advanced_options):
+    #     pylon_radius = 25
+    #     ankle_height = foot_length*0.3 # height where foot meets pylon
+    #     toe_height = ankle_height*0.5
+    #     pylon_offset = pylon_radius*1.2 #distance top center of pylon is offset forward from heel
+    # else:
+    #     #uncomment for streamlit page
+    ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
+
     pylon_height = height - ankle_height
-    ankle_radius = 0.4 * foot_width
-    toe_radius = 0.6 * ankle_radius
     heel_radius = 0.4 * foot_width
-    pylon_offset = pylon_radius*1.2 #distance top center of pylon is offset forward from heel
-    # t_offset = 0.01
-    
+    toe_radius = 0.6 * heel_radius
+
     #pyramid adapter
     ball_base_radius = 47.8/2
     ball_depth = 10.7
@@ -80,8 +131,8 @@ def GetShape():
     #defines top of foot
     arch_spline_pts = [
         (foot_length, toe_height), #
-        (foot_length*0.7, toe_height*1.2),
-        (pylon_radius*3, ankle_height) #end of the arch, where the front of the pylon will connect
+        (pylon_radius*2+(foot_length-pylon_radius*2)*0.7, toe_height+((ankle_height-toe_height)*0.1)),
+        (pylon_radius*2, ankle_height) #end of the arch, where the front of the pylon will connect
     ]
     
     arch_tangents = [
@@ -89,7 +140,6 @@ def GetShape():
         (None),
         (None),
     ]
-    
     
     def getArch():
         arch = (
@@ -129,12 +179,7 @@ def GetShape():
             .edges("|X")
             .fillet(1)
         )
-        
-        
         foot = foot.cut(adapter)
-        # show_object(adapter)
-        # show_object(foot)
-        # return adapter
         return foot
     
     def AddPylon(foot):
@@ -156,7 +201,6 @@ def GetShape():
             .spline(heel_spline_pts, heel_tangents)
             .lineTo(-ankle_radius, foot_length - toe_radius)
             .spline(toe_spline_pts, toe_tangents)
-            # .spline(lateral_toe_spline_pts, lateral_toe_tangents)
             .close()
             .extrude(ankle_height)
             .cut(getArch())
@@ -164,7 +208,7 @@ def GetShape():
             .edges("not |X")
             .fillet(toe_height/2)
             .faces("<Y")
-            .fillet(5)
+            .fillet(toe_height/5)
         )
         return foot
         
@@ -180,6 +224,11 @@ def GetShape():
     
     foot = AssembleFoot()
     return foot
+
+
+
+#end of CadQuery script
+
 
 
 
@@ -204,6 +253,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
