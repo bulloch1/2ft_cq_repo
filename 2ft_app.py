@@ -20,7 +20,7 @@ def PageContents():
 
     #page elements
     st.title("2ft Custom Prosthesis")
-    metric = st.toggle("Use metreic units (mm, kg)", value = True)
+    metric = st.toggle("Use metric units (mm, kg)", value = True)
     if metric:
         height = st.slider("Height (mm)", height_lb, height_ub)
         foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub)
@@ -39,7 +39,7 @@ def PageContents():
         weight = st.slider("Weight (lbs)", weight_lb*lb_per_kg, weight_ub*lb_per_kg)
         
     right = st.toggle("Right foot")
-    advanced_options = st.toggle("Use advanced measurements")
+    advanced_options = st.toggle("Use advanced measurements", value = False)
         
     return height, foot_length, foot_width, weight, right, advanced_options    
 
@@ -51,10 +51,10 @@ def GetShape():
         predicted_pylon_offset = predicted_pylon_radius*1.2
         
         if (advanced_options):
-            pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2)
-            ankle_height = st.slider("Ankle Height", predicted_ankle_height * 0.8, predicted_ankle_height * 1.2)
-            toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2)
-            pylon_offest = st.slider("forward leg offset", predicted_pylon_offset * 0.8, predicted_pylon_offset * 1.2)
+            pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2, value = predicted_pylon_radius)
+            ankle_height = st.slider("Ankle Height", predicted_ankle_height * 0.8, predicted_ankle_height * 1.2, value = predicted_ankle_height)
+            toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2, value = predicted_toe_height)
+            pylon_offest = st.slider("forward leg offset", predicted_pylon_offset * 0.8, predicted_pylon_offset * 1.2, value = predicted_pylon_offset)
         else:
             ankle_height = predicted_ankle_height
             toe_height = predicted_toe_height
@@ -236,6 +236,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
