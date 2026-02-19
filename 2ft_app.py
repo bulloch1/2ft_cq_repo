@@ -145,9 +145,9 @@ def GetShape():
             .cut(getArch())
             .faces("<<Y[1]")
             .edges("not |X")
-            .fillet(toe_height*0.5)
-            # .faces("<Y")
-            # .fillet(toe_height/5)
+            .fillet(toe_height*0.4)
+            .faces("<Y")
+            .fillet(toe_height/5)
         )
         return foot
     
@@ -196,8 +196,8 @@ def GetShape():
     
     def AssembleFoot():
         foot = Foot()
-        # foot = AddPylon(foot)
-        # foot = CutPyramidAdapter(foot)
+        foot = AddPylon(foot)
+        foot = CutPyramidAdapter(foot)
         
         if (right == False):
             foot = foot.mirror("YZ")
@@ -229,6 +229,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
