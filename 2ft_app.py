@@ -46,10 +46,10 @@ def PageContents():
 
 def GetShape():
     def getAdvancedMeasurements():
-        predicted_pylon_radius = 30 #TODO make this reflect weight or proportional to given measurement
-        predicted_ankle_height = foot_length*0.3 # height where foot meets pylon
-        predicted_toe_height = predicted_ankle_height*0.5
-        predicted_pylon_offset = predicted_pylon_radius*1.2
+        predicted_pylon_radius = heel_radius #TODO make this reflect weight or proportional to given measurement
+        predicted_ankle_height = foot_length*0.4 # height where foot meets pylon. Currently arbitrary. TODO? 
+        predicted_toe_height = foot_length*0.15 # Arbitrary
+        predicted_pylon_offset = predicted_pylon_radius*1.2 #makes the back of the heel line up with the back of the pylon
         
         if (advanced_options):
             pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2, value = predicted_pylon_radius)
@@ -63,25 +63,12 @@ def GetShape():
             pylon_radius = predicted_pylon_radius
         return ankle_height, toe_height, pylon_offset, pylon_radius
 
-
     # Start of CadQuery script
-
     height, foot_length, foot_width, weight, right, advanced_options = PageContents()
-    
-    heel_radius = 0.4 * foot_width
-    # ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
-    predicted_pylon_radius = 30 #TODO make this reflect weight or proportional to given measurement
-    predicted_ankle_height = foot_length*0.3 # height where foot meets pylon
-    predicted_toe_height = predicted_ankle_height*0.5
-    predicted_pylon_offset = predicted_pylon_radius*1.2
-    ankle_height = predicted_ankle_height
-    toe_height = predicted_toe_height
-    pylon_offset = predicted_pylon_offset
-    pylon_radius = predicted_pylon_radius
-
-    
+    heel_radius = 0.4 * foot_width #this value makes the medial edge of the heel vertical (40% of foot is medial, 60% is lateral)
+    ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
     pylon_height = height - ankle_height
-    toe_radius = 0.6 * heel_radius
+    toe_length = 0.15 * foot_length
      
     #pyramid adapter
     ball_base_radius = 47.8/2
@@ -93,61 +80,90 @@ def GetShape():
     lateral_vector = (heel_radius - 0.6*foot_width, heel_radius - 0.66*foot_length)
     toe_vector = (1, -0.7)
      
-    #defines back of the heel curvature
-    heel_spline_pts = [
-        (heel_radius, heel_radius), #right side of heel
-        (0.5*heel_radius, 0.2*heel_radius),
+    #defines footprint shape
+    big_toe_pt = (-0.3*heel_radius, foot_length)#
+    little_toe_pt = (0.3*foot_width, foot_length*0.9)
+    ball_y = 0.66*foot_length # y distance of the widest part of the foot, where foot_width is measured
+    footprint_spline_pts = [
         (0, 0),#base of heel
         (-heel_radius, heel_radius), #left side
-    ]
-    
-    heel_tangents = [
-        (lateral_vector), #forces tangecy with right (lateral) edge of foot
-        (None),
-        (-1, 0),
-        (0,1), #tangent with medial edge
-    ]
-    
-    #Big toe spline part
-    big_toe_pt = (-0.3*heel_radius, foot_length)# TODO make toe end exactly at foot_length
-    little_toe_pt = (0, foot_length*0.99)
-    toe_spline_pts = [
-        (-heel_radius, foot_length - (toe_radius)), #
+        (-heel_radius, foot_length - (toe_length)),#connects medial edge to big toe
         (big_toe_pt),
         (little_toe_pt),
-        (0.6*foot_width, 0.66*foot_length),
+        (0.6*foot_width, ball_y), #TODO make right side end exactly at foot_width*0.6
+        (heel_radius, heel_radius), #right side of heel
+        (0.5*heel_radius, 0.2*heel_radius),
+        (0, 0),#back to starting pt
     ]
     
-    toe_tangents = [
+    footprint_tangents = [
+        (-1, 0), #back of heel is horizontal
+        (0, 1), #tangent with medial edge
         (0, 1),
-        (1, 0),
+        (1, 0),#toe must be horizontal at foot_length
         (toe_vector),
         (lateral_vector),
+        (lateral_vector), #forces tangecy with right (lateral) edge of foot
+        (None),
+        (-1, 0)
     ]
-     
+    
     #defines top of foot
+    ankle_x = pylon_radius*2.4
+    ankle_point = (ankle_x, ankle_height) #end of the arch, where the front of the pylon will connect
     arch_spline_pts = [
-        (foot_length, toe_height), #
-        (pylon_radius*2+(foot_length-pylon_radius*2)*0.7, toe_height+((ankle_height-toe_height)*0.1)),
-        (pylon_radius*2, ankle_height) #end of the arch, where the front of the pylon will connect
+        (foot_length, toe_height), 
+        # (ankle_x+(foot_length-ankle_x)*0.55, toe_height+((ankle_height-toe_height)*0.12)), #((55% between ankle and toe), (12% between toe height and ankle height))
+        (ball_y, toe_height+((ankle_height-toe_height)*0.2)), #((55% between ankle and toe), (12% between toe height and ankle height))
+        (ankle_point) 
     ]
     
     arch_tangents = [
         (-1, 0),
         (None),
-        (None),
+        (-0.2, 1),
     ]
     
     def getArch():
         arch = (
             cq.Workplane("right")
+            .workplane(offset = -0.4*foot_width)
             .spline(arch_spline_pts, arch_tangents)
             .lineTo(foot_length*2, ankle_height)
             .lineTo(foot_length*2, toe_height)
             .close()
-            .extrude(foot_width, both = True)
+            .extrude(foot_width*2)
         )
         return arch
+    
+    def Foot():
+        foot = (
+            cq.Workplane("top")
+            .spline(footprint_spline_pts, footprint_tangents)
+            .close()
+            .extrude(ankle_height)
+            .cut(getArch())
+            .faces("<<Y[1]")
+            .edges("not |X")
+            .fillet(toe_height*0.5)
+            # .fillet(10)
+            .faces("<Y")
+            .fillet(toe_height/5)
+        )
+        return foot
+    
+    def AddPylon(foot):
+        foot = (
+            foot.faces(">Y")
+            .edges()
+            .toPending()
+            .offset2D(0)
+            .workplane(offset = pylon_height)
+            .center(0, pylon_offset)
+            .ellipse(pylon_radius, pylon_radius*1.2)
+            .loft(combine = True)
+        )
+        return foot
     
     def CutPyramidAdapter(foot):
         adapter = (
@@ -179,36 +195,6 @@ def GetShape():
         foot = foot.cut(adapter)
         return foot
     
-    def AddPylon(foot):
-        foot = (
-            foot.faces(">Y")
-            .edges()
-            .toPending()
-            .offset2D(0)
-            .workplane(offset = pylon_height)
-            .center(0, pylon_offset)
-            .ellipse(pylon_radius, pylon_radius*1.2)
-            .loft(combine = True)
-        )
-        return foot
-    
-    def Foot():
-        foot = (
-            cq.Workplane("top")
-            .spline(heel_spline_pts, heel_tangents)
-            .lineTo(-heel_radius, foot_length - toe_radius)
-            .spline(toe_spline_pts, toe_tangents)
-            .close()
-            .extrude(ankle_height)
-            .cut(getArch())
-            .faces("<<Y[1]")
-            .edges("not |X")
-            .fillet(toe_height/2)
-            .faces("<Y")
-            .fillet(toe_height/5)
-        )
-        return foot
-        
     def AssembleFoot():
         foot = Foot()
         foot = AddPylon(foot)
@@ -223,10 +209,6 @@ def GetShape():
     return foot
 
 #end of CadQuery script
-
-
-
-
 
 def ExportSTL(result):
     tmp_path = None
@@ -248,6 +230,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
