@@ -66,6 +66,7 @@ def GetShape():
     # Start of CadQuery script
 
     height, foot_length, foot_width, weight, right, advanced_options = PageContents()
+    println(height, foot_length, foot_width, weight, right, advanced_options)
     heel_radius = 0.4 * foot_width
     ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
     pylon_height = height - ankle_height
@@ -236,6 +237,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
