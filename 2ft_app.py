@@ -65,13 +65,15 @@ def GetShape():
 
     # Start of CadQuery script
 
-    # height, foot_length, foot_width, weight, right, advanced_options = PageContents()
-    weight = 20
-    foot_length = 120
-    foot_width = 55
-    height = 200
-    right = True
-    advanced_options = False
+    height, foot_length, foot_width, weight, right, advanced_options = PageContents()
+
+    
+    # weight = 20
+    # foot_length = 120
+    # foot_width = 55
+    # height = 200
+    # right = True
+    # advanced_options = False
 
     
     heel_radius = 0.4 * foot_width
@@ -249,6 +251,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
