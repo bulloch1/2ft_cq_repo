@@ -6,10 +6,11 @@ import os
 
 def PageContents():
     #standard bounds in metric (mm, kg)
-    height_lb = 200
-    height_ub = 500
-    foot_length_lb = 120
-    foot_length_ub = 280
+    height_lb = 150
+    height_ub = 400
+    foot_length_lb = 150
+    foot_length_avg = 250
+    foot_length_ub = 300
     weight_lb = 20
     weight_ub = 100
     predicted_width_intercept = 17.3
@@ -23,7 +24,7 @@ def PageContents():
     metric = st.toggle("Use metric units (mm, kg)", value = True)
     if metric:
         height = st.slider("Height (mm)", height_lb, height_ub)
-        foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub)
+        foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
         predicted_width = 0.32 * foot_length + predicted_width_intercept
         width_lb = predicted_width * 0.6
         width_ub = predicted_width * 1.4
@@ -251,6 +252,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
