@@ -196,7 +196,7 @@ def GetShape():
     
     def AssembleFoot():
         foot = Foot()
-        foot = AddPylon(foot)
+        # foot = AddPylon(foot)
         # foot = CutPyramidAdapter(foot)
         
         if (right == False):
@@ -229,6 +229,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
