@@ -19,6 +19,9 @@ def PageContents():
     in_per_mm = 1/25.4
     lb_per_kg = 2.20462
 
+    if height_lb < foot_length*0.5:
+        height_lb = foot_length*0.5
+        
     #page elements
     st.title("2ft Custom Prosthesis 305")
     metric = st.toggle("Use metric units (mm, kg)", value = True)
@@ -229,6 +232,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
