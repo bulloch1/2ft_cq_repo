@@ -78,11 +78,7 @@ def GetShape():
 
     
     heel_radius = 0.4 * foot_width
-    # ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
-    pylon_radius = 30 #TODO make this reflect weight or proportional to given measurement
-    ankle_height = foot_length*0.3 # height where foot meets pylon
-    toe_height = ankle_height*0.5
-    pylon_offset = pylon_radius*1.2
+    ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
     
     pylon_height = height - ankle_height
     toe_radius = 0.6 * heel_radius
@@ -252,6 +248,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
