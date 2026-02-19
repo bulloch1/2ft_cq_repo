@@ -65,10 +65,22 @@ def GetShape():
 
     # Start of CadQuery script
 
-    height, foot_length, foot_width, weight, right, advanced_options = PageContents()
-    print(height, foot_length, foot_width, weight, right, advanced_options)
+    # height, foot_length, foot_width, weight, right, advanced_options = PageContents()
+    weight = 20
+    foot_length = 120
+    foot_width = 55
+    height = 200
+    right = True
+    advanced_options = False
+
+    
     heel_radius = 0.4 * foot_width
-    ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
+    # ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
+    pylon_radius = 30 #TODO make this reflect weight or proportional to given measurement
+    ankle_height = foot_length*0.3 # height where foot meets pylon
+    toe_height = ankle_height*0.5
+    pylon_offset = pylon_radius*1.2
+    
     pylon_height = height - ankle_height
     toe_radius = 0.6 * heel_radius
      
@@ -237,6 +249,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
