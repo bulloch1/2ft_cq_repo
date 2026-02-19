@@ -146,9 +146,8 @@ def GetShape():
             .faces("<<Y[1]")
             .edges("not |X")
             .fillet(toe_height*0.5)
-            # .fillet(10)
-            .faces("<Y")
-            .fillet(toe_height/5)
+            # .faces("<Y")
+            # .fillet(toe_height/5)
         )
         return foot
     
@@ -230,6 +229,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
