@@ -18,16 +18,15 @@ def PageContents():
     #conversion factors
     in_per_mm = 1/25.4
     lb_per_kg = 2.20462
-
-    if height_lb < foot_length*0.5:
-        height_lb = foot_length*0.5
         
     #page elements
     st.title("2ft Custom Prosthesis 305")
     metric = st.toggle("Use metric units (mm, kg)", value = True)
     if metric:
-        height = st.slider("Height (mm)", height_lb, height_ub)
         foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
+        height_lb = foot_length*0.5 #height muust be greater than ankle height
+        
+        height = st.slider("Height (mm)", height_lb, height_ub)
         predicted_width = 0.32 * foot_length + predicted_width_intercept
         width_lb = predicted_width * 0.6
         width_ub = predicted_width * 1.4
@@ -232,6 +231,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
