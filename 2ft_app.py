@@ -23,7 +23,7 @@ def PageContents():
 #     st.title("2ft Custom Prosthesis 902")
 #     metric = st.toggle("Use metric units (mm, kg)", value = True)
 #     if metric:
-        foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
+    foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
 #         height_lb = int(foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
         
 #         height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
@@ -264,6 +264,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
