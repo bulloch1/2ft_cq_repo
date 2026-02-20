@@ -20,7 +20,7 @@ def PageContents():
     lb_per_kg = 2.20462
         
     #page elements
-    st.title("2ft Custom Prosthesis 825")
+    st.title("2ft Custom Prosthesis 902")
     metric = st.toggle("Use metric units (mm, kg)", value = True)
     if metric:
         foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
@@ -157,8 +157,8 @@ def GetShape():
             .faces("<<Y[2]")
             .edges("not <<Y[1] or <<Y[0]")
             .chamfer(toe_height*0.2)
-            # .faces("<Y")
-            # .chamfer(toe_height*0.1)
+            .faces("<Y")
+            .chamfer(toe_height*0.1)
         )
         return foot
     
@@ -176,6 +176,16 @@ def GetShape():
         return foot
     
     def CutPyramidAdapter(foot):
+        base_height = 8
+        adapter_base = (
+            cq.Workplane("right")
+            .center(pylon_offset, pylon_height+ankle_height - base_height/2)
+            .box(62, base_height, pylon_radius*2)
+            .edges("|Y")
+            .fillet(8)
+        )
+        foot = foot.union(adapter_base).clean()
+        
         adapter = (
             cq.Workplane("right")
             .center(pylon_offset, pylon_height+ankle_height)
@@ -240,6 +250,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
