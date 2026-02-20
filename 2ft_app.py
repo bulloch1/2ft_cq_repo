@@ -6,31 +6,32 @@ import os
 
 def PageContents():
 #     #standard bounds in metric (mm, kg)
-#     height_lb = 150
+    height_lb = 150
     height_ub = 400
     foot_length_lb = 150
     foot_length_avg = 200
     foot_length_ub = 300
-#     weight_lb = 20
-#     weight_ub = 100
-#     predicted_width_intercept = 17.3
+    weight_lb = 20
+    weight_ub = 100
+    predicted_width_intercept = 17.3
 
 #     #conversion factors
-#     in_per_mm = 1/25.4
-#     lb_per_kg = 2.20462
+    in_per_mm = 1/25.4
+    lb_per_kg = 2.20462
         
 #     #page elements
-#     st.title("2ft Custom Prosthesis 902")
-#     metric = st.toggle("Use metric units (mm, kg)", value = True)
-#     if metric:
-    foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
+    st.title("2ft Custom Prosthesis 902")
+    metric = st.toggle("Use metric units (mm, kg)", value = True)
+    if metric:
+        foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
 #         height_lb = int(foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
         
 #         height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
-#         predicted_width = 0.32 * foot_length + predicted_width_intercept
-#         width_lb = predicted_width * 0.85
-#         width_ub = predicted_width * 1.4
-#         foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
+        # predicted_width = 0.32 * foot_length + predicted_width_intercept
+        predicted_width = 72
+        width_lb = predicted_width * 0.85
+        width_ub = predicted_width * 1.4
+        foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
 #         weight = st.slider("Weight (kg)", weight_lb, weight_ub)
 #     else:
 #         st.title("make sure imperial is working")
@@ -48,7 +49,7 @@ def PageContents():
 
     weight = 20
     # foot_length = 200
-    foot_width = 72
+    # foot_width = 72
     height = 130
     right = True
     advanced_options = False
@@ -264,6 +265,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
