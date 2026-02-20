@@ -5,65 +5,79 @@ import tempfile
 import os
 
 def PageContents():
-    #standard bounds in metric (mm, kg)
-    height_lb = 150
-    height_ub = 400
-    foot_length_lb = 150
-    foot_length_avg = 250
-    foot_length_ub = 300
-    weight_lb = 20
-    weight_ub = 100
-    predicted_width_intercept = 17.3
+#     #standard bounds in metric (mm, kg)
+#     height_lb = 150
+#     height_ub = 400
+#     foot_length_lb = 150
+#     foot_length_avg = 250
+#     foot_length_ub = 300
+#     weight_lb = 20
+#     weight_ub = 100
+#     predicted_width_intercept = 17.3
 
-    #conversion factors
-    in_per_mm = 1/25.4
-    lb_per_kg = 2.20462
+#     #conversion factors
+#     in_per_mm = 1/25.4
+#     lb_per_kg = 2.20462
         
-    #page elements
-    st.title("2ft Custom Prosthesis 902")
-    metric = st.toggle("Use metric units (mm, kg)", value = True)
-    if metric:
-        foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
-        height_lb = int(foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
+#     #page elements
+#     st.title("2ft Custom Prosthesis 902")
+#     metric = st.toggle("Use metric units (mm, kg)", value = True)
+#     if metric:
+#         foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
+#         height_lb = int(foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
         
-        height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
-        predicted_width = 0.32 * foot_length + predicted_width_intercept
-        width_lb = predicted_width * 0.85
-        width_ub = predicted_width * 1.4
-        foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
-        weight = st.slider("Weight (kg)", weight_lb, weight_ub)
-    else:
-        st.title("make sure imperial is working")
-        # height = st.slider("Height (in)", height_lb*in_per_mm, height_ub*in_per_mm)/in_per_mm
-        # foot_length = st.slider("Foot Length (in)", foot_length_lb*in_per_mm, foot_length_ub*in_per_mm)/in_per_mm
-        # predicted_width = 0.32 * foot_length + predicted_width_intercept*in_per_mm
-        # width_lb = predicted_width * 0.6
-        # width_ub = predicted_width * 1.4
-        # foot_width = st.slider("Foot Width (in)", width_lb, width_ub, value = predicted_width)/in_per_mm
-        # weight = st.slider("Weight (lbs)", weight_lb*lb_per_kg, weight_ub*lb_per_kg)/lb_per_kg
+#         height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
+#         predicted_width = 0.32 * foot_length + predicted_width_intercept
+#         width_lb = predicted_width * 0.85
+#         width_ub = predicted_width * 1.4
+#         foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
+#         weight = st.slider("Weight (kg)", weight_lb, weight_ub)
+#     else:
+#         st.title("make sure imperial is working")
+#         # height = st.slider("Height (in)", height_lb*in_per_mm, height_ub*in_per_mm)/in_per_mm
+#         # foot_length = st.slider("Foot Length (in)", foot_length_lb*in_per_mm, foot_length_ub*in_per_mm)/in_per_mm
+#         # predicted_width = 0.32 * foot_length + predicted_width_intercept*in_per_mm
+#         # width_lb = predicted_width * 0.6
+#         # width_ub = predicted_width * 1.4
+#         # foot_width = st.slider("Foot Width (in)", width_lb, width_ub, value = predicted_width)/in_per_mm
+#         # weight = st.slider("Weight (lbs)", weight_lb*lb_per_kg, weight_ub*lb_per_kg)/lb_per_kg
         
-    right = st.toggle("Right foot")
-    advanced_options = st.toggle("Use advanced measurements", value = False)
+#     right = st.toggle("Right foot")
+#     advanced_options = st.toggle("Use advanced measurements", value = False)
+
+
+    weight = 20
+    foot_length = 200
+    foot_width = 72
+    height = 130
+    right = True
+    advanced_options = False
         
     return height, foot_length, foot_width, weight, right, advanced_options    
 
 def GetShape():
     def getAdvancedMeasurements():
-        predicted_pylon_radius = heel_radius #TODO make this reflect weight or proportional to given measurement
-        predicted_ankle_height = foot_length*0.4 # height where foot meets pylon. Currently arbitrary. TODO? 
-        predicted_toe_height = foot_length*0.15 # Arbitrary
-        predicted_pylon_offset = predicted_pylon_radius*1.2 #makes the back of the heel line up with the back of the pylon
+        # predicted_pylon_radius = heel_radius #TODO make this reflect weight or proportional to given measurement
+        # predicted_ankle_height = foot_length*0.4 # height where foot meets pylon. Currently arbitrary. TODO? 
+        # predicted_toe_height = foot_length*0.15 # Arbitrary
+        # predicted_pylon_offset = predicted_pylon_radius*1.2 #makes the back of the heel line up with the back of the pylon
         
-        if (advanced_options):
-            pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2, value = predicted_pylon_radius)
-            ankle_height = st.slider("Ankle Height", predicted_ankle_height * 0.8, predicted_ankle_height * 1.2, value = predicted_ankle_height)
-            toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2, value = predicted_toe_height)
-            pylon_offest = st.slider("forward leg offset", predicted_pylon_offset * 0.8, predicted_pylon_offset * 1.2, value = predicted_pylon_offset)
-        else:
-            ankle_height = predicted_ankle_height
-            toe_height = predicted_toe_height
-            pylon_offset = predicted_pylon_offset
-            pylon_radius = predicted_pylon_radius
+        # if (advanced_options):
+        #     pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2, value = predicted_pylon_radius)
+        #     ankle_height = st.slider("Ankle Height", predicted_ankle_height * 0.8, predicted_ankle_height * 1.2, value = predicted_ankle_height)
+        #     toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2, value = predicted_toe_height)
+        #     pylon_offest = st.slider("forward leg offset", predicted_pylon_offset * 0.8, predicted_pylon_offset * 1.2, value = predicted_pylon_offset)
+        # else:
+        #     ankle_height = predicted_ankle_height
+        #     toe_height = predicted_toe_height
+        #     pylon_offset = predicted_pylon_offset
+        #     pylon_radius = predicted_pylon_radius
+
+
+        pylon_radius = heel_radius #TODO make this reflect weight or proportional to given measurement
+        ankle_height = foot_length*0.4 # height where foot meets pylon
+        toe_height = foot_length*0.15
+        pylon_offset = pylon_radius*1.2
         return ankle_height, toe_height, pylon_offset, pylon_radius
 
     # Start of CadQuery script
@@ -250,6 +264,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
