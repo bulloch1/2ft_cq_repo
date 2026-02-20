@@ -267,7 +267,8 @@ if __name__ == "__main__":
             os.unlink(tmp_path)
         
         del result, stl_bytes
-        gc.collect()"leg2.stl")
+        gc.collect()
+
 
 
 
