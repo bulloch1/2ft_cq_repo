@@ -120,7 +120,7 @@ def GetShape():
     arch_spline_pts = [
         (foot_length, toe_height), 
         # (ankle_x+(foot_length-ankle_x)*0.55, toe_height+((ankle_height-toe_height)*0.12)), #((55% between ankle and toe), (12% between toe height and ankle height))
-        (ball_y, toe_height+((ankle_height-toe_height)*0.2)), #((at the ball of the foot), (20% between toe height and ankle height))
+        (ball_y, toe_height+((ankle_height-toe_height)*0.2)), #((55% between ankle and toe), (12% between toe height and ankle height))
         (ankle_point) 
     ]
     
@@ -154,8 +154,11 @@ def GetShape():
             .faces("<<Y[1]")
             .edges("not |X")
             .chamfer(toe_height*0.4)
-            # .faces("<Y")
-            # .fillet(toe_height*0.2)
+            # .faces("<<Y[2]")
+            .edges("not <<Y[1] or <<Y[0]")
+            .chamfer(toe_height*0.2)
+            .faces("<Y")
+            .chamfer(toe_height*0.1)
         )
         return foot
     
@@ -237,6 +240,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
