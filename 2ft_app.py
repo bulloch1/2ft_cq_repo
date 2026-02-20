@@ -80,7 +80,8 @@ def GetShape():
         # ankle_height = foot_length*0.4 # height where foot meets pylon
         # toe_height = foot_length*0.15
         # pylon_offset = pylon_radius*1.2
-        # return ankle_height, toe_height, pylon_offset, pylon_radius
+    
+        return ankle_height, toe_height, pylon_offset, pylon_radius
 
     # Start of CadQuery script
     
@@ -266,6 +267,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
