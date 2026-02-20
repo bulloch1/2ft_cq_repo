@@ -67,11 +67,14 @@ def GetShape():
         return ankle_height, toe_height, pylon_offset, pylon_radius
 
     # Start of CadQuery script
+    
     height, foot_length, foot_width, weight, right, advanced_options = PageContents()
+    
     heel_radius = 0.4 * foot_width #this value makes the medial edge of the heel vertical (40% of foot is medial, 60% is lateral)
     ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
+    
     pylon_height = height - ankle_height
-    toe_length = 0.15 * foot_length
+    toe_length = 0.14 * foot_length
      
     #pyramid adapter
     ball_base_radius = 47.8/2
@@ -81,11 +84,11 @@ def GetShape():
     dove_base_width = 14
     
     lateral_vector = (heel_radius - 0.6*foot_width, heel_radius - 0.66*foot_length)
-    toe_vector = (1, -0.7)
+    toe_vector = (1, -0.6)
      
     #defines footprint shape
-    big_toe_pt = (-0.3*heel_radius, foot_length)#
-    little_toe_pt = (0.3*foot_width, foot_length*0.9)
+    big_toe_pt = (-0.2*heel_radius, foot_length)#
+    little_toe_pt = (0.4*foot_width, foot_length*0.94)
     ball_y = 0.66*foot_length # y distance of the widest part of the foot, where foot_width is measured
     footprint_spline_pts = [
         (0, 0),#base of heel
@@ -117,14 +120,14 @@ def GetShape():
     arch_spline_pts = [
         (foot_length, toe_height), 
         # (ankle_x+(foot_length-ankle_x)*0.55, toe_height+((ankle_height-toe_height)*0.12)), #((55% between ankle and toe), (12% between toe height and ankle height))
-        (ball_y, toe_height+((ankle_height-toe_height)*0.2)), #((55% between ankle and toe), (12% between toe height and ankle height))
+        (ball_y, toe_height+((ankle_height-toe_height)*0.2)), #((at the ball of the foot), (20% between toe height and ankle height))
         (ankle_point) 
     ]
     
     arch_tangents = [
         (-1, 0),
         (None),
-        (-0.2, 1),
+        (-0.4, 1),
     ]
     
     def getArch():
@@ -146,11 +149,13 @@ def GetShape():
             .close()
             .extrude(ankle_height)
             .cut(getArch())
+            .combine()
+            .clean()
             .faces("<<Y[1]")
             .edges("not |X")
-            .fillet(toe_height*0.4)
-            # .faces("<Y")
-            # .fillet(toe_height/5)
+            .fillet(toe_height*0.5)
+            .faces("<Y")
+            .fillet(toe_height*0.2)
         )
         return foot
     
@@ -232,6 +237,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
