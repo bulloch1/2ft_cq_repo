@@ -24,7 +24,7 @@ def PageContents():
     metric = st.toggle("Use metric units (mm, kg)", value = True)
     if metric:
         foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
-        height_lb = foot_length*0.5 #height muust be greater than ankle height
+        height_lb = foot_length*0.7 #height muust be greater than ankle height
         
         height = st.slider("Height (mm)", height_lb, height_ub)
         predicted_width = 0.32 * foot_length + predicted_width_intercept
@@ -231,6 +231,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
