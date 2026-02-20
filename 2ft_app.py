@@ -29,8 +29,8 @@ def PageContents():
 #         height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
         # predicted_width = 0.32 * foot_length + predicted_width_intercept
         predicted_width = 72
-        width_lb = predicted_width * 0.85
-        width_ub = predicted_width * 1.4
+        width_lb = int(predicted_width * 0.85)
+        width_ub = int(predicted_width * 1.4)
         foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
 #         weight = st.slider("Weight (kg)", weight_lb, weight_ub)
 #     else:
@@ -265,6 +265,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
