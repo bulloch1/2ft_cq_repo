@@ -1,3 +1,4 @@
 streamlit
 vtk>=9.4.0
 cadquery
+psutil
