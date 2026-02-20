@@ -157,8 +157,8 @@ def GetShape():
             # .faces("<<Y[2]")
             .edges("not <<Y[1] or <<Y[0]")
             .chamfer(toe_height*0.2)
-            .faces("<Y")
-            .chamfer(toe_height*0.1)
+            # .faces("<Y")
+            # .chamfer(toe_height*0.1)
         )
         return foot
     
@@ -240,6 +240,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
