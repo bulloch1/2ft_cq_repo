@@ -20,7 +20,7 @@ def PageContents():
     lb_per_kg = 2.20462
         
     #page elements
-    st.title("2ft Custom Prosthesis 820")
+    st.title("2ft Custom Prosthesis 825")
     metric = st.toggle("Use metric units (mm, kg)", value = True)
     if metric:
         foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
@@ -153,7 +153,7 @@ def GetShape():
             .clean()
             .faces("<<Y[1]")
             .edges("not |X")
-            .fillet(toe_height*0.4)
+            .chamfer(toe_height*0.4)
             # .faces("<Y")
             # .fillet(toe_height*0.2)
         )
@@ -237,6 +237,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
