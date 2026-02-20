@@ -3,6 +3,7 @@ import cadquery as cq
 from cadquery import exporters
 import tempfile
 import os
+import gc
 
 def PageContents():
 #     #standard bounds in metric (mm, kg)
@@ -247,26 +248,27 @@ def GetShape():
 
 #end of CadQuery script
 
-def ExportSTL(result):
+if __name__ == "__main__":
+    result = GetShape()
+
     tmp_path = None
+    stl_bytes = None
     try:
         with tempfile.NamedTemporaryFile(suffix=".stl", delete=False) as tmp:
             tmp_path = tmp.name
             result.val().export(tmp_path)
-        
         with open(tmp_path, "rb") as f:
             stl_bytes = f.read()
         
-    except Exception:
-        pass
+        st.download_button("Download STL", stl_bytes, "prosthesis.stl")
+        
     finally:
         if tmp_path and os.path.exists(tmp_path):
             os.unlink(tmp_path)
+        
+        del result, stl_bytes
+        gc.collect()"leg2.stl")
 
-    st.download_button("Download STL", stl_bytes, "leg2.stl")
-
-
-ExportSTL(GetShape())
 
 
 
