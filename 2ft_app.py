@@ -7,10 +7,10 @@ import os
 def PageContents():
 #     #standard bounds in metric (mm, kg)
 #     height_lb = 150
-#     height_ub = 400
-#     foot_length_lb = 150
-#     foot_length_avg = 250
-#     foot_length_ub = 300
+    height_ub = 400
+    foot_length_lb = 150
+    foot_length_avg = 200
+    foot_length_ub = 300
 #     weight_lb = 20
 #     weight_ub = 100
 #     predicted_width_intercept = 17.3
@@ -23,7 +23,7 @@ def PageContents():
 #     st.title("2ft Custom Prosthesis 902")
 #     metric = st.toggle("Use metric units (mm, kg)", value = True)
 #     if metric:
-#         foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
+        foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
 #         height_lb = int(foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
         
 #         height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
@@ -47,7 +47,7 @@ def PageContents():
 
 
     weight = 20
-    foot_length = 200
+    # foot_length = 200
     foot_width = 72
     height = 130
     right = True
@@ -264,6 +264,7 @@ def ExportSTL(result):
 
 
 ExportSTL(GetShape())
+
 
 
 
