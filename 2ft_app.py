@@ -5,15 +5,15 @@ import tempfile
 import os
 
 #global session state variables
-if height not in st.session_state:
+if "height" not in st.session_state:
     st.session_state.height = 150
-if foot_length not in st.session_state:
+if "foot_length" not in st.session_state:
     st.session_state.foot_length = 200
-if foot_width not in st.session_state:
+if "foot_width" not in st.session_state:
     st.session_state.foot_width = 80
-if weight not in st.session_state:
+if "weight" not in st.session_state:
     st.session_state.height = 70
-if right not in st.session_state:
+if "right" not in st.session_state:
     st.session_state.right = True
 
 # advanced_options = False
@@ -293,6 +293,7 @@ def ExportSTL():
 
 ExportSTL()
 # PageContents()
+
 
 
 
