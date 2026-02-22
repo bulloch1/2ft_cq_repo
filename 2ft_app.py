@@ -55,7 +55,7 @@ def PageContents():
     else:
         # st.title("make sure imperial is working")
         st.session_state.height = st.slider("Height (in)", height_lb*in_per_mm, height_ub*in_per_mm)/in_per_mm
-        st.session_state.foot_length = st.slider("Foot Length (in)", st.session_state.foot_length_lb*in_per_mm, foot_length_ub*in_per_mm)/in_per_mm
+        st.session_state.foot_length = st.slider("Foot Length (in)", foot_length_lb*in_per_mm, foot_length_ub*in_per_mm)/in_per_mm
         predicted_width = 0.32 * st.session_state.foot_length + predicted_width_intercept*in_per_mm
         width_lb = predicted_width * 0.6
         width_ub = predicted_width * 1.4
@@ -292,6 +292,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
