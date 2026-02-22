@@ -33,37 +33,48 @@ def PageContents():
     weight_ub = 100
     predicted_width_intercept = 17.3
 
-#     #conversion factors
+    #conversion factors
     in_per_mm = 1/25.4
     lb_per_kg = 2.20462
-        
-#     #page elements
+    if metric:
+        height_lb = 150 * in_per_mm
+        height_ub = 400 * in_per_mm
+        foot_length_lb = 150 * in_per_mm
+        foot_length_avg = 200 * in_per_mm
+        foot_length_ub = 300 * in_per_mm
+        weight_lb = 20 * lb_per_kg
+        weight_ub = 100 * lb_per_kg
+        predicted_width_intercept = 17.3 * in_per_mm
+    
+    #page elements
     st.title("2ft Custom Prosthesis 947")
     metric = st.toggle("Use metric units (mm, kg)", value = True)
-    if metric:
-        st.session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
-        
-        height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
-        st.session_state.height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
-        
-        predicted_width = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
-        width_lb = int(predicted_width * 0.85)
-        width_ub = int(predicted_width * 1.4)
-        st.session_state.foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
-        
-        st.session_state.weight = st.slider("Weight (kg)", weight_lb, weight_ub)
-    else:
-        # st.title("make sure imperial is working")
-        st.session_state.height = st.slider("Height (in)", height_lb*in_per_mm, height_ub*in_per_mm)/in_per_mm
-        st.session_state.foot_length = st.slider("Foot Length (in)", foot_length_lb*in_per_mm, foot_length_ub*in_per_mm)/in_per_mm
-        predicted_width = 0.32 * st.session_state.foot_length + predicted_width_intercept*in_per_mm
-        width_lb = predicted_width * 0.6
-        width_ub = predicted_width * 1.4
-        st.session_state.foot_width = st.slider("Foot Width (in)", width_lb, width_ub, value = predicted_width)/in_per_mm
-        st.session_state.weight = st.slider("Weight (lbs)", weight_lb*lb_per_kg, weight_ub*lb_per_kg)/lb_per_kg
-        
+
+    #length
+    st.session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
+
+    #height
+    height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
+    st.session_state.height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
+
+    #width
+    predicted_width = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
+    width_lb = int(predicted_width * 0.85)
+    width_ub = int(predicted_width * 1.4)
+    st.session_state.foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
+
+    #weight
+    st.session_state.weight = st.slider("Weight (kg)", weight_lb, weight_ub)
+
+    #other
     st.session_state.right = st.toggle("Right foot")
     st.session_state.advanced_options = st.toggle("Use advanced measurements", value = False)
+
+    if metric:
+        st.session_state.foot_length / in_per_mm
+        st.session_state.height / in_per_mm
+        st.session_state.foot_width / in_per_mm
+        st.session_state.weight / lb_per_kg
 
     #for troubleshooting. Reflects what is in CQ
     # weight = 20
@@ -292,6 +303,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
