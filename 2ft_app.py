@@ -3,8 +3,6 @@ import cadquery as cq
 from cadquery import exporters
 import tempfile
 import os
-import gc
-import psutil
 
 def PageContents():
 #     #standard bounds in metric (mm, kg)
@@ -249,107 +247,23 @@ def GetShape():
 
 #end of CadQuery script
 
-if __name__ == "__main__":
-    st.sidebar.metric("RAM (MB)", psutil.Process().memory_info().rss / 1e6 // 1e6)
-
-    # Generate model ONLY when download clicked (not every slider!)
-    if st.download_button("Generate & Download STL", "Click to generate", disabled=False):
-        with st.spinner("Building model (30-60s)..."):
-            result = GetShape()  # Heavy CadQuery
-            
-            tmp_path = None
-            stl_bytes = None
-            try:
-                with tempfile.NamedTemporaryFile(suffix=".stl", delete=False) as tmp:
-                    tmp_path = tmp.name
-                    result.val().export(tmp_path)
-                
-                with open(tmp_path, "rb") as f:
-                    stl_bytes = f.read()
-                
-                st.download_button("✅ Download STL", stl_bytes, "prosthesis.stl")
-                
-            finally:
-                # IMMEDIATE cleanup
-                if tmp_path and os.path.exists(tmp_path):
-                    os.unlink(tmp_path)
-                del result, stl_bytes
-                gc.collect()
-                
-        st.sidebar.success("🧹 RAM cleaned!")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def ExportSTL(result):
+    tmp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(suffix=".stl", delete=False) as tmp:
+            tmp_path = tmp.name
+            result.val().export(tmp_path)
+        
+        with open(tmp_path, "rb") as f:
+            stl_bytes = f.read()
+        
+    except Exception:
+        pass
+    finally:
+        if tmp_path and os.path.exists(tmp_path):
+            os.unlink(tmp_path)
+
+    st.download_button("Download STL", stl_bytes, "leg2.stl")
+
+
+ExportSTL(GetShape())
