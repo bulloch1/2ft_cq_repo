@@ -40,10 +40,10 @@ def PageContents():
     if metric:
         st.session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
         
-        height_lb = int(foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
+        height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
         st.session_state.height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
         
-        predicted_width = int(0.32 * foot_length + predicted_width_intercept)
+        predicted_width = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
         width_lb = int(predicted_width * 0.85)
         width_ub = int(predicted_width * 1.4)
         st.session_state.foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
@@ -293,6 +293,7 @@ def ExportSTL():
 
 ExportSTL()
 # PageContents()
+
 
 
 
