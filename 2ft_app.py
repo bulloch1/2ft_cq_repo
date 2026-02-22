@@ -4,13 +4,19 @@ from cadquery import exporters
 import tempfile
 import os
 
+#global session state variables
+if height not in st.session_state:
+    st.session_state.height = 150
+if foot_length not in st.session_state:
+    st.session_state.foot_length = 200
+if foot_width not in st.session_state:
+    st.session_state.foot_width = 80
+if weight not in st.session_state:
+    st.session_state.height = 70
+if right not in st.session_state:
+    st.session_state.right = True
 
-height = 150
-foot_length = 200
-foot_width = 0
-weight = 0
-right = True
-advanced_options = False
+# advanced_options = False
 
 
 def PageContents():
@@ -29,20 +35,20 @@ def PageContents():
     lb_per_kg = 2.20462
         
 #     #page elements
-    st.title("2ft Custom Prosthesis 902")
+    st.title("2ft Custom Prosthesis 947")
     metric = st.toggle("Use metric units (mm, kg)", value = True)
     if metric:
-        foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
+        session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
         
         height_lb = int(foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
-        height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
+        session_state.height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
         
         predicted_width = int(0.32 * foot_length + predicted_width_intercept)
         width_lb = int(predicted_width * 0.85)
         width_ub = int(predicted_width * 1.4)
-        foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
+        session_state.foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
         
-        weight = st.slider("Weight (kg)", weight_lb, weight_ub)
+        session_state.weight = st.slider("Weight (kg)", weight_lb, weight_ub)
     else:
         st.title("make sure imperial is working")
         # height = st.slider("Height (in)", height_lb*in_per_mm, height_ub*in_per_mm)/in_per_mm
@@ -53,8 +59,8 @@ def PageContents():
         # foot_width = st.slider("Foot Width (in)", width_lb, width_ub, value = predicted_width)/in_per_mm
         # weight = st.slider("Weight (lbs)", weight_lb*lb_per_kg, weight_ub*lb_per_kg)/lb_per_kg
         
-    right = st.toggle("Right foot")
-    advanced_options = st.toggle("Use advanced measurements", value = False)
+    session_state.right = st.toggle("Right foot")
+    # advanced_options = st.toggle("Use advanced measurements", value = False)
 
     #for troubleshooting. Reflects what is in CQ
     # weight = 20
@@ -92,9 +98,16 @@ def GetShape():
     
         return ankle_height, toe_height, pylon_offset, pylon_radius
 
+    
+    height = session_state.height
+    foot_length = session_state.foot_length
+    foot_width = session_state.foot_width
+    weight = session_state.weight
+    right = session_state.right
     # Start of CadQuery script
     
     # height, foot_length, foot_width, weight, right, advanced_options = PageContents()
+    
     
     heel_radius = 0.4 * foot_width #this value makes the medial edge of the heel vertical (40% of foot is medial, 60% is lateral)
     ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
@@ -280,5 +293,6 @@ def ExportSTL():
 
 ExportSTL()
 # PageContents()
+
 
 
