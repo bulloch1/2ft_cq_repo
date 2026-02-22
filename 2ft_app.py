@@ -18,11 +18,12 @@ if "right" not in st.session_state:
 if "advanced_options" not in st.session_state:
     st.session_state.advanced_options = False
 
-
-# advanced_options = False
-
-
 def PageContents():
+    #title page elements
+    st.title("2ft Custom Prosthesis 947")
+    metric = st.toggle("Use metric units (mm, kg)", value = True)
+
+    
 #     #standard bounds in metric (mm, kg)
     height_lb = 150
     height_ub = 400
@@ -46,10 +47,7 @@ def PageContents():
         weight_ub = 100 * lb_per_kg
         predicted_width_intercept = 17.3 * in_per_mm
     
-    #page elements
-    st.title("2ft Custom Prosthesis 947")
-    metric = st.toggle("Use metric units (mm, kg)", value = True)
-
+    #VALUE PAGE ELEMENTS
     #length
     st.session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
 
@@ -303,6 +301,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
