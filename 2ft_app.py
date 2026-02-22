@@ -21,7 +21,7 @@ if "advanced_options" not in st.session_state:
 def PageContents():
     #title page elements
     st.title("2ft Custom Prosthesis 947")
-    metric = st.toggle("Use metric units (mm, kg)", value = True)
+    # metric = st.toggle("Use metric units (mm, kg)", value = True)
 
     
 #     #standard bounds in metric (mm, kg)
@@ -37,15 +37,15 @@ def PageContents():
     #conversion factors
     in_per_mm = 1/25.4
     lb_per_kg = 2.20462
-    if metric:
-        height_lb = 150 * in_per_mm
-        height_ub = 400 * in_per_mm
-        foot_length_lb = 150 * in_per_mm
-        foot_length_avg = 200 * in_per_mm
-        foot_length_ub = 300 * in_per_mm
-        weight_lb = 20 * lb_per_kg
-        weight_ub = 100 * lb_per_kg
-        predicted_width_intercept = 17.3 * in_per_mm
+    # if not metric:
+    #     height_lb = 150 * in_per_mm
+    #     height_ub = 400 * in_per_mm
+    #     foot_length_lb = 150 * in_per_mm
+    #     foot_length_avg = 200 * in_per_mm
+    #     foot_length_ub = 300 * in_per_mm
+    #     weight_lb = 20 * lb_per_kg
+    #     weight_ub = 100 * lb_per_kg
+    #     predicted_width_intercept = 17.3 * in_per_mm
     
     #VALUE PAGE ELEMENTS
     #length
@@ -68,11 +68,11 @@ def PageContents():
     st.session_state.right = st.toggle("Right foot")
     st.session_state.advanced_options = st.toggle("Use advanced measurements", value = False)
 
-    if metric:
-        st.session_state.foot_length / in_per_mm
-        st.session_state.height / in_per_mm
-        st.session_state.foot_width / in_per_mm
-        st.session_state.weight / lb_per_kg
+    # if not metric:
+    #     st.session_state.foot_length / in_per_mm
+    #     st.session_state.height / in_per_mm
+    #     st.session_state.foot_width / in_per_mm
+    #     st.session_state.weight / lb_per_kg
 
     #for troubleshooting. Reflects what is in CQ
     # weight = 20
