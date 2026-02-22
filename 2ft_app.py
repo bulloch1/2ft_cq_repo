@@ -267,5 +267,5 @@ def GetShape():
 
 
 # ExportSTL(GetShape())
+PageContents()
 
-pageContents()
