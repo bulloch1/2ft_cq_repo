@@ -23,10 +23,10 @@ def PageContents():
     st.title("OpenGait", text_alignment = "center")
     st.caption("The world's first fully customizable, downloadable prosthetic leg", text_alignment = "center")
     st.divider()
-    st.space(size = "medium")
+    st.space("medium")
     
     left, right = st.columns(2)
-    right.metric = st.sidebar.toggle("Use metric units (mm, kg)", value = True)
+    left.metric = st.sidebar.toggle("Use metric units (mm, kg)", value = True)
     
 #     #standard bounds in metric (mm, kg)
     height_lb = 150
@@ -55,23 +55,22 @@ def PageContents():
     #length
     st.session_state.foot_length = left.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
     left.caption("From the back of the heel to the tip of the big toe")
-    left.space("medium")
     
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
-    st.session_state.height = right.slider("Height of Residual Limb (mm)", height_lb, height_ub)
+    st.session_state.height = left.slider("Height of Residual Limb (mm)", height_lb, height_ub)
 
     #width
     predicted_width = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
     width_lb = int(predicted_width * 0.85)
     width_ub = int(predicted_width * 1.4)
-    st.session_state.foot_width = right.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
+    st.session_state.foot_width = left.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
     
     #weight
     st.session_state.weight = left.slider("Weight (kg)", weight_lb, weight_ub)
 
     #other
-    side = st.sidebar.multiselect("Which foot?", ("Left", "Right"))
+    side = st.multiselect("Which foot?", ("Left", "Right"))
     if (side == "Left"):
         st.session_state.right = False
     else:
@@ -316,6 +315,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
