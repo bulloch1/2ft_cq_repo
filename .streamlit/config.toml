@@ -3,7 +3,9 @@ base="light"
 backgroundColor="white"
 secondaryBackgroundColor="lavender"
 codeBackgroundColor="powderBlue"
+textcolor="lavender"
+primaryColor="ghostWhite"
 
-[theme.sidebar]
-backgroundColor="ghostWhite"
-secondaryBackgroundColor="lavender"
+# [theme.sidebar]
+# backgroundColor="ghostWhite"
+# secondaryBackgroundColor="lavender"
