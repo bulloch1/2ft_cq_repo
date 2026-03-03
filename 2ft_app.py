@@ -23,7 +23,6 @@ def PageContents():
     st.title("OpenGait")
     st.caption("The world's first fully customizable, downloadable prosthetic leg")
     
-
     left, right = st.columns(2)
     right.metric = st.toggle("Use metric units (mm, kg)", value = True)
     
@@ -52,29 +51,29 @@ def PageContents():
     
     #VALUE PAGE ELEMENTS
     #length
-    left.session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
+    st.session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
     left.caption("From the back of the heel to the tip of the big toe")
     left.space("medium")
     
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
-    left.session_state.height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
+    st.session_state.height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
     left.divider()
 
     #width
     predicted_width = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
     width_lb = int(predicted_width * 0.85)
     width_ub = int(predicted_width * 1.4)
-    left.session_state.foot_width = st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
+    st.session_state.foot_width = st.sidebar.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
     left.divider()
 
     #weight
-    left.session_state.weight = st.slider("Weight (kg)", weight_lb, weight_ub)
+    st.session_state.weight = st.slider("Weight (kg)", weight_lb, weight_ub)
     left.divider()
 
     #other
-    right.session_state.right = st.toggle("Right foot")
-    right.session_state.advanced_options = st.toggle("Use advanced measurements", value = False)
+    session_state.right = st.sidebar.multiselect("Which foot?", ("Left", "Right"))
+    session_state.advanced_options = st.toggle("Use advanced measurements", value = False)
 
     # if not metric:
     #     st.session_state.foot_length / in_per_mm
@@ -312,6 +311,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
