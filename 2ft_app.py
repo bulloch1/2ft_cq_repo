@@ -15,9 +15,6 @@ def PageContents():
     st.divider()
     st.space("medium")
     
-    left, right = st.columns(2)
-    
-    
 #     #standard bounds in metric (mm, kg)
     height_lb = 150
     height_ub = 400
@@ -43,29 +40,29 @@ def PageContents():
     
     #VALUE PAGE ELEMENTS
     #length
-    left.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg, key = "foot_length")
-    left.space("small")
+    st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg, key = "foot_length")
+    st.space("small")
     
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
-    left.slider("Limb Height (mm)", height_lb, height_ub, key = "height")
-    left.space("small")
+    st.slider("Limb Height (mm)", height_lb, height_ub, key = "height")
+    st.space("small")
     
     #width
     predicted_width = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
     width_lb = int(predicted_width * 0.85)
     width_ub = int(predicted_width * 1.4)
-    left.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width, key = "foot_width")
-    left.space("small")
+    st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width, key = "foot_width")
+    st.space("small")
 
     #weight
-    left.slider("Weight (kg)", weight_lb, weight_ub, key = "weight")
-    left.space("small")
+    st.slider("Weight (kg)", weight_lb, weight_ub, key = "weight")
+    st.space("small")
 
     #other
-    side = left.radio("Which foot?", ("Left", "Right"))
+    side = st.radio("Which foot?", ("Left", "Right"))
     st.session_state.right = (side == "Right")
-    left.space("small")
+    st.space("small")
 
 
     
@@ -316,6 +313,7 @@ def ExportSTL():
         )
 
 ExportSTL()
+
 
 
 
