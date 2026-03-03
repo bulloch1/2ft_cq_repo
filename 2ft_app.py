@@ -20,8 +20,11 @@ if "advanced_options" not in st.session_state:
 
 def PageContents():
     #title page elements
-    st.title("Custom Prosthetic Leg 947")
+    st.title("OpenGait")
+    st.caption("The world's first fully customizable, downloadable prosthetic leg")
     # metric = st.toggle("Use metric units (mm, kg)", value = True)
+
+    left, right = st.columns(2)
     
 #     #standard bounds in metric (mm, kg)
     height_lb = 150
@@ -48,8 +51,9 @@ def PageContents():
     
     #VALUE PAGE ELEMENTS
     #length
-    st.session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
-    st.caption("From the back of the heel to the tip of the big toe")
+    left.session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
+    left.caption("From the back of the heel to the tip of the big toe")
+    
     
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
@@ -307,6 +311,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
