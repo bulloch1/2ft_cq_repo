@@ -24,7 +24,7 @@ def PageContents():
     st.caption("The world's first fully customizable, downloadable prosthetic leg")
     
     left, right = st.columns(2)
-    right.metric = st.toggle("Use metric units (mm, kg)", value = True)
+    right.metric = st.sidebar.toggle("Use metric units (mm, kg)", value = True)
     
 #     #standard bounds in metric (mm, kg)
     height_lb = 150
@@ -51,30 +51,33 @@ def PageContents():
     
     #VALUE PAGE ELEMENTS
     #length
-    st.session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
+    st.session_state.foot_length = left.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
     left.caption("From the back of the heel to the tip of the big toe")
     left.space("medium")
     
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
-    st.session_state.height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
-    left.divider()
+    st.session_state.height = st.right.slider("Height of Residual Limb (mm)", height_lb, height_ub)
 
     #width
     predicted_width = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
     width_lb = int(predicted_width * 0.85)
     width_ub = int(predicted_width * 1.4)
-    st.session_state.foot_width = st.sidebar.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
-    left.divider()
-
+    st.session_state.foot_width = st.right.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
+    
     #weight
-    st.session_state.weight = st.slider("Weight (kg)", weight_lb, weight_ub)
-    left.divider()
+    st.session_state.weight = st.left.slider("Weight (kg)", weight_lb, weight_ub)
 
     #other
-    session_state.right = st.sidebar.multiselect("Which foot?", ("Left", "Right"))
-    session_state.advanced_options = st.toggle("Use advanced measurements", value = False)
+    side = st.sidebar.multiselect("Which foot?", ("Left", "Right"))
+    if (side == "Left"):
+        st.session.right = False
+    else:
+        st.session.right = True
+    session_state.advanced_options = st.sidebar.toggle("Use advanced measurements", value = False)
+    
 
+    
     # if not metric:
     #     st.session_state.foot_length / in_per_mm
     #     st.session_state.height / in_per_mm
@@ -311,6 +314,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
