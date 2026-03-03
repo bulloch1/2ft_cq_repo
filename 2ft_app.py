@@ -71,9 +71,9 @@ def PageContents():
     #other
     side = st.sidebar.multiselect("Which foot?", ("Left", "Right"))
     if (side == "Left"):
-        st.session.right = False
+        st.session_state.right = False
     else:
-        st.session.right = True
+        st.session_state.right = True
     session_state.advanced_options = st.sidebar.toggle("Use advanced measurements", value = False)
     
 
@@ -314,6 +314,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
