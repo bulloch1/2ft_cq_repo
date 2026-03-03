@@ -69,11 +69,8 @@ def PageContents():
     left.slider("Weight (kg)", weight_lb, weight_ub, key = "weight")
 
     #other
-    side = left.multiselect("Which foot?", ("Left", "Right"))
-    if (side == "Left"):
-        st.session_state.right = False
-    else:
-        st.session_state.right = True
+    side = left.radio("Which foot?", ("Left", "Right"))
+    st.session_state.right = (side == "Right")
     st.session_state.advanced_options = st.sidebar.toggle("Use advanced measurements", value = False)
     
 
@@ -298,27 +295,28 @@ def GetShape():
 
 def ExportSTL():
     PageContents()
-    if st.button("Generate file"):
+
+    if st.button("Generate File"):
         result = GetShape()
-        tmp_path = None   
-        try:
-            with tempfile.NamedTemporaryFile(suffix=".stl", delete=False) as tmp:
-                tmp_path = tmp.name
-                result.val().export(tmp_path)
-            
-            with open(tmp_path, "rb") as f:
-                stl_bytes = f.read()
-            
-        except Exception:
-            pass
-        finally:
-            if tmp_path and os.path.exists(tmp_path):
-                os.unlink(tmp_path)
-    
-        st.download_button("Download STL", stl_bytes, "leg2.stl")
-        del result, stl_bytes
+
+        with tempfile.NamedTemporaryFile(suffix=".stl", delete=False) as tmp:
+            tmp_path = tmp.name
+            result.val().export(tmp_path)
+
+        with open(tmp_path, "rb") as f:
+            st.session_state.stl_bytes = f.read()
+
+        os.unlink(tmp_path)
+
+    if "stl_bytes" in st.session_state:
+        st.download_button(
+            "Download STL",
+            st.session_state.stl_bytes,
+            "leg2.stl"
+        )
 
 ExportSTL()
+
 
 
 
