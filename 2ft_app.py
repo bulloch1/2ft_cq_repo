@@ -20,9 +20,8 @@ if "advanced_options" not in st.session_state:
 
 def PageContents():
     #title page elements
-    st.title("2ft Custom Prosthesis 947")
+    st.title("Custom Prosthetic Leg 947")
     # metric = st.toggle("Use metric units (mm, kg)", value = True)
-
     
 #     #standard bounds in metric (mm, kg)
     height_lb = 150
@@ -50,7 +49,8 @@ def PageContents():
     #VALUE PAGE ELEMENTS
     #length
     st.session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
-
+    st.caption("From the back of the heel to the tip of the big toe")
+    
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
     st.session_state.height = st.slider("Height of Residual Limb (mm)", height_lb, height_ub)
@@ -81,7 +81,10 @@ def PageContents():
     # height = 130
     # right = True
     # advanced_options = False
-        
+
+    st.header("Instructions")
+    st.text("Step 1. measure...")
+
     # return height, foot_length, foot_width, weight, right, advanced_options    
 
 def GetShape():
@@ -301,6 +304,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
