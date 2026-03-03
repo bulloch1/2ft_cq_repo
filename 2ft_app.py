@@ -315,10 +315,11 @@ def ExportSTL():
             if tmp_path and os.path.exists(tmp_path):
                 os.unlink(tmp_path)
     
-        right.download_button("Download STL", stl_bytes, "leg2.stl")
+        download_button("Download STL", stl_bytes, "leg2.stl")
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
