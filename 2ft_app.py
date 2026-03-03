@@ -20,8 +20,10 @@ if "advanced_options" not in st.session_state:
 
 def PageContents():
     #title page elements
-    st.title("OpenGait")
-    st.caption("The world's first fully customizable, downloadable prosthetic leg")
+    st.title("OpenGait", text_alignment = "center")
+    st.caption("The world's first fully customizable, downloadable prosthetic leg", text_alignment = "center")
+    st.divider()
+    st.space(size = "medium")
     
     left, right = st.columns(2)
     right.metric = st.sidebar.toggle("Use metric units (mm, kg)", value = True)
@@ -314,6 +316,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
