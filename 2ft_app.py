@@ -16,7 +16,7 @@ def PageContents():
     st.space("medium")
     
     left, right = st.columns(2)
-    st.sidebar.toggle("Use metric units (mm, kg)", value = True, key = "metric")
+    
     
 #     #standard bounds in metric (mm, kg)
     height_lb = 150
@@ -65,7 +65,6 @@ def PageContents():
     #other
     side = left.radio("Which foot?", ("Left", "Right"))
     st.session_state.right = (side == "Right")
-    st.session_state.advanced_options = st.sidebar.toggle("Use advanced measurements", value = False)
     left.space("small")
 
 
@@ -84,6 +83,9 @@ def PageContents():
     # right = True
     # advanced_options = False
 
+    st.session_state.advanced_options = st.sidebar.toggle("Use advanced measurements", value = False)
+    st.sidebar.toggle("Use metric units (mm, kg)", value = True, key = "metric")
+    st.sidebar.divider()
     st.sidebar.header("Instructions")
     st.sidebar.subheader("Foot Length")
     st.sidebar.text("Measure the distance from the back of your heel to the tip of your big toe")
@@ -314,6 +316,7 @@ def ExportSTL():
         )
 
 ExportSTL()
+
 
 
 
