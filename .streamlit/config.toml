@@ -3,7 +3,7 @@ base="light"
 backgroundColor="ghostWhite"
 secondaryBackgroundColor="lavender"
 textcolor="lavender"
-primaryColor="aliceBlue"
+primaryColor="skyBlue"
 
 # [theme.sidebar]
 # backgroundColor="ghostWhite"
