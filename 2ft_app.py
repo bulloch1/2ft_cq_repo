@@ -91,7 +91,7 @@ def GetShape():
         predicted_toe_height = foot_length*0.15 # Arbitrary
         predicted_pylon_offset = predicted_pylon_radius*1.2 #makes the back of the heel line up with the back of the pylon
         
-        if (advanced_options):
+        if (st.session_state.advanced_options):
             pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2, value = predicted_pylon_radius)
             ankle_height = st.slider("Ankle Height", predicted_ankle_height * 0.8, predicted_ankle_height * 1.2, value = predicted_ankle_height)
             toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2, value = predicted_toe_height)
@@ -301,6 +301,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
