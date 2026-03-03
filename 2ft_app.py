@@ -54,7 +54,6 @@ def PageContents():
     #VALUE PAGE ELEMENTS
     #length
     st.session_state.foot_length = left.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
-    left.caption("From the back of the heel to the tip of the big toe")
     
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
@@ -70,7 +69,7 @@ def PageContents():
     st.session_state.weight = left.slider("Weight (kg)", weight_lb, weight_ub)
 
     #other
-    side = st.multiselect("Which foot?", ("Left", "Right"))
+    side = left.multiselect("Which foot?", ("Left", "Right"))
     if (side == "Left"):
         st.session_state.right = False
     else:
@@ -94,7 +93,9 @@ def PageContents():
     # advanced_options = False
 
     st.header("Instructions")
-    st.text("Step 1. measure...")
+    st.subheader("Foot Length")
+    st.text("Measure the distance from the back of your heel to the tip of your big toe")
+    st.image("https://wizardskating.com/pages/wizard-skate-size-chart")
 
     # return height, foot_length, foot_width, weight, right, advanced_options    
 
@@ -315,6 +316,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
