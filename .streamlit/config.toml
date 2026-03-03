@@ -1,10 +1,9 @@
 [theme]
 base="light"
-backgroundColor="white"
+backgroundColor="ghostWhite"
 secondaryBackgroundColor="lavender"
-codeBackgroundColor="powderBlue"
 textcolor="lavender"
-primaryColor="ghostWhite"
+primaryColor="powderBlue"
 
 # [theme.sidebar]
 # backgroundColor="ghostWhite"
