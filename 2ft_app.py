@@ -92,10 +92,13 @@ def PageContents():
     # right = True
     # advanced_options = False
 
-    st.header("Instructions")
-    st.subheader("Foot Length")
-    st.text("Measure the distance from the back of your heel to the tip of your big toe")
-    st.image("https://wizardskating.com/pages/wizard-skate-size-chart")
+    right.header("Instructions")
+    right.subheader("Foot Length")
+    right.text("Measure the distance from the back of your heel to the tip of your big toe")
+    right.space("small")
+    right.subheader("Foot Width")
+    right.text("Measure the width of your foot directly across at the widest point")
+    right.space("small")
 
     # return height, foot_length, foot_width, weight, right, advanced_options    
 
@@ -316,6 +319,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
