@@ -48,7 +48,7 @@ def PageContents():
     
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
-    left.slider("Height of Residual Limb (mm)", height_lb, height_ub, key = "height")
+    left.slider("Limb Height (mm)", height_lb, height_ub, key = "height")
     left.space("small")
     
     #width
@@ -90,6 +90,9 @@ def PageContents():
     right.space("small")
     right.subheader("Foot Width")
     right.text("Measure the width of your foot directly across at the widest point")
+    right.space("small")
+    right.subheader("Limb Height")
+    right.text("Measure the distance from the plate of your pyramid adapter (at the base of your socket) to the ground")
     right.space("small")
 
     # return height, foot_length, foot_width, weight, right, advanced_options    
@@ -311,6 +314,7 @@ def ExportSTL():
         )
 
 ExportSTL()
+
 
 
 
