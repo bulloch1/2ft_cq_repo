@@ -54,7 +54,7 @@ def PageContents():
     #length
     left.session_state.foot_length = st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
     left.caption("From the back of the heel to the tip of the big toe")
-    
+    left.space("medium")
     
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
@@ -312,6 +312,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
