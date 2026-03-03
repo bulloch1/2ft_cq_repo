@@ -84,16 +84,16 @@ def PageContents():
     # right = True
     # advanced_options = False
 
-    right.header("Instructions")
-    right.subheader("Foot Length")
-    right.text("Measure the distance from the back of your heel to the tip of your big toe")
-    right.space("small")
-    right.subheader("Foot Width")
-    right.text("Measure the width of your foot directly across at the widest point")
-    right.space("small")
-    right.subheader("Limb Height")
-    right.text("Measure the distance from the plate of your pyramid adapter (at the base of your socket) to the ground")
-    right.space("small")
+    st.sidebar.header("Instructions")
+    st.sidebar.subheader("Foot Length")
+    st.sidebar.text("Measure the distance from the back of your heel to the tip of your big toe")
+    st.sidebar.space("small")
+    st.sidebar.subheader("Foot Width")
+    st.sidebar.text("Measure the width of your foot directly across at the widest point")
+    st.sidebar.space("small")
+    st.sidebar.subheader("Limb Height")
+    st.sidebar.text("Measure the distance from the plate of your pyramid adapter (at the base of your socket) to the ground")
+    st.sidebar.space("small")
 
     # return height, foot_length, foot_width, weight, right, advanced_options    
 
@@ -314,6 +314,7 @@ def ExportSTL():
         )
 
 ExportSTL()
+
 
 
 
