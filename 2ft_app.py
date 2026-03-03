@@ -5,18 +5,18 @@ import tempfile
 import os
 
 #global session state variables
-if "height" not in st.session_state:
-    st.session_state.height = 150
-if "foot_length" not in st.session_state:
-    st.session_state.foot_length = 200
-if "foot_width" not in st.session_state:
-    st.session_state.foot_width = 80
-if "weight" not in st.session_state:
-    st.session_state.height = 70
-if "right" not in st.session_state:
-    st.session_state.right = True
-if "advanced_options" not in st.session_state:
-    st.session_state.advanced_options = False
+# if "height" not in st.session_state:
+#     st.session_state.height = 150
+# if "foot_length" not in st.session_state:
+#     st.session_state.foot_length = 200
+# if "foot_width" not in st.session_state:
+#     st.session_state.foot_width = 80
+# if "weight" not in st.session_state:
+#     st.session_state.height = 70
+# if "right" not in st.session_state:
+#     st.session_state.right = True
+# if "advanced_options" not in st.session_state:
+#     st.session_state.advanced_options = False
 
 def PageContents():
     #title page elements
@@ -26,7 +26,7 @@ def PageContents():
     st.space("medium")
     
     left, right = st.columns(2)
-    left.metric = st.sidebar.toggle("Use metric units (mm, kg)", value = True)
+    st.sidebar.toggle("Use metric units (mm, kg)", value = True, key = "metric")
     
 #     #standard bounds in metric (mm, kg)
     height_lb = 150
@@ -53,20 +53,20 @@ def PageContents():
     
     #VALUE PAGE ELEMENTS
     #length
-    st.session_state.foot_length = left.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg)
+    left.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg, key = "foot_length")
     
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
-    st.session_state.height = left.slider("Height of Residual Limb (mm)", height_lb, height_ub)
+    left.slider("Height of Residual Limb (mm)", height_lb, height_ub, key = "height")
 
     #width
     predicted_width = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
     width_lb = int(predicted_width * 0.85)
     width_ub = int(predicted_width * 1.4)
-    st.session_state.foot_width = left.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width)
+    left.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width, key = "foot_width")
     
     #weight
-    st.session_state.weight = left.slider("Weight (kg)", weight_lb, weight_ub)
+    left.slider("Weight (kg)", weight_lb, weight_ub, key = "weight")
 
     #other
     side = left.multiselect("Which foot?", ("Left", "Right"))
@@ -319,6 +319,7 @@ def ExportSTL():
         del result, stl_bytes
 
 ExportSTL()
+
 
 
 
