@@ -1,5 +1,4 @@
 import streamlit as st
-import cadquery as cq
 from cadquery import exporters
 import tempfile
 import os
@@ -101,6 +100,8 @@ def PageContents(): #collects and calculates all foot measurements
     st.session_state.toe_length = st.session_state.foot_length * 0.2
 
 def GetShape():    
+    import cadquery as cq
+    
     height = st.session_state.height
     foot_length = st.session_state.foot_length
     foot_width = st.session_state.foot_width
@@ -301,6 +302,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
