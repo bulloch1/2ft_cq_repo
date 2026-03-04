@@ -40,8 +40,8 @@ def PageContents():
     
     #VALUE PAGE ELEMENTS
     #length
-    # st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg, key = "foot_length")
-    # st.space("small")
+    st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg, key = "foot_length")
+    st.space("small")
     
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
@@ -52,7 +52,7 @@ def PageContents():
     predicted_width = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
     width_lb = int(predicted_width * 0.85)
     width_ub = int(predicted_width * 1.4)
-    st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width, = "foot_width")
+    st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width, key = "foot_width")
     st.space("small")
 
     #weight
@@ -316,6 +316,7 @@ def ExportSTL():
         )
 
 ExportSTL()
+
 
 
 
