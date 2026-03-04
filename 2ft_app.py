@@ -262,8 +262,8 @@ def GetShape():
         st.write("starting Foot() ")
         foot = Foot()
         st.write("finished Foot()")
-        foot = AddPylon(foot)
-        st.write("finished pylon")
+        # foot = AddPylon(foot)
+        # st.write("finished pylon")
         # foot = CutPyramidAdapter(foot)
         # st.write("finished adapter")
         
@@ -323,6 +323,7 @@ st.write("finished pagecontents")
 BuildModel()
 st.write("finished BuildModel()")
 CheckDownloadStatus()
+
 
 
 
