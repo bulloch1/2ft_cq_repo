@@ -59,7 +59,6 @@ def PageContents(): #collects and calculates all foot measurements
 
     #sidebar
     st.sidebar.toggle("Use advanced measurements", value = False, key = "advanced_options")
-    st.sidebar.toggle("Use metric units (mm, kg)", value = True, key = "metric")
     st.sidebar.divider()
     st.sidebar.title("Instructions")
     st.sidebar.subheader("Foot Length")
@@ -312,6 +311,7 @@ def BuildModel():
 PageContents()
 BuildModel()
 CheckDownloadStatus()
+
 
 
 
