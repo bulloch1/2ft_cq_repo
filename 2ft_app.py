@@ -270,6 +270,9 @@ def GetShape():
     
 #end of CadQuery script
 
+def DownloadComplete():
+    st.switch_page("pages/downloadLanding.py")
+
 def BuildModel():
     if st.button("Generate File"):
         try:
@@ -286,12 +289,13 @@ def BuildModel():
 
             download = False
             if "stl_bytes" in st.session_state:
-                if st.download_button("Download STL", st.session_state.stl_bytes, "OpenGaitLeg.stl"):
-                    st.switch_page("pages/downloadLanding.py")
-            # if download:
-                
-            #     st.switch_page("downloadLanding.py")
-                
+                st.download_button(
+                    "Download STL", 
+                    st.session_state.stl_bytes, 
+                    "OpenGaitLeg.stl", 
+                    on_click = DownloadComplete()
+                )
+
         except Exception as e:
             st.error("Model generation failed")
             st.code(traceback.format_exc())
@@ -300,6 +304,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
