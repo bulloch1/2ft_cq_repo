@@ -5,6 +5,9 @@ secondaryBackgroundColor="lavender"
 # textColor="black"
 primaryColor="skyBlue"
 
+[client]
+showSidebarNavigation = false
+
 # [theme.sidebar]
 # backgroundColor="ghostWhite"
 # secondaryBackgroundColor="lavender"
