@@ -2,7 +2,7 @@
 base="light"
 backgroundColor="ghostWhite"
 secondaryBackgroundColor="lavender"
-textColor="lavender"
+textColor="midnightBlue"
 primaryColor="skyBlue"
 
 # [theme.sidebar]
