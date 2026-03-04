@@ -286,13 +286,10 @@ def BuildModel():
 
             download = False
             if "stl_bytes" in st.session_state:
-                download = st.download_button(
-                    "Download STL",
-                    st.session_state.stl_bytes,
-                    "OpenGaitLeg.stl"
-                )
-            if download:
-                st.switch_page("pages/downloadLanding.py")
+                if st.download_button("Download STL", st.session_state.stl_bytes, "OpenGaitLeg.stl"):
+                    st.switch_page("pages/downloadLanding.py")
+            # if download:
+                
             #     st.switch_page("downloadLanding.py")
                 
         except Exception as e:
@@ -303,6 +300,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
