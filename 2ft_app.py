@@ -120,6 +120,7 @@ def GetShape():
     #pyramid adapter
     tolerance = 0.12
     base_plate_thickness = 4.1
+    base_plate_width = 54.37
     ball_base_radius = 40.9/2 + tolerance #this tolerance may be different since its a curve
     ball_depth = 13.36 - base_plate_thickness + tolerance
     dove_depth = 24.36 - ball_depth - base_plate_thickness
@@ -223,7 +224,7 @@ def GetShape():
         adapter_base = (
             cq.Workplane("right")
             .center(pylon_offset, pylon_height+ankle_height - base_height/2)
-            .box(62, base_height, pylon_radius*2)
+            .box(base_plate_width, base_height, base_plate_width)
             # .edges("|Y")
             # .fillet(8)
         )
@@ -244,7 +245,7 @@ def GetShape():
             .close()
             .extrude(dove_base_width/2)
             .faces("<X")
-            .extrude(-pylon_radius*2)
+            .extrude(-pylon_radius*3)
         )
         adapter = (
             adapter
@@ -257,15 +258,12 @@ def GetShape():
         )
         foot = foot.cut(adapter)
         return foot
+        # return adapter
     
     def AssembleFoot():
-        st.write("starting Foot() ")
         foot = Foot()
-        st.write("finished Foot()")
         foot = AddPylon(foot)
-        st.write("finished pylon")
         foot = CutPyramidAdapter(foot)
-        st.write("finished adapter")
         
         if (right == False):
             foot = foot.mirror("YZ")
@@ -323,6 +321,7 @@ st.write("finished pagecontents")
 BuildModel()
 st.write("finished BuildModel()")
 CheckDownloadStatus()
+
 
 
 
