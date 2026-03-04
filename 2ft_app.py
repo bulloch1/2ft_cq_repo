@@ -288,11 +288,13 @@ def CheckDownloadStatus():
 def BuildModel():
     if st.button("Generate File"):
         try:
-            st.session_state.foot = GetShape()
+            foot = GetShape()
 
             with tempfile.NamedTemporaryFile(suffix=".stl", delete=False) as tmp:
                 tmp_path = tmp.name
-                st.session_state.foot.val().export(tmp_path)
+                foot.val().export(tmp_path)
+                
+            del foot
     
             with open(tmp_path, "rb") as f:
                 st.session_state.stl_bytes = f.read()
@@ -306,11 +308,14 @@ def BuildModel():
                     "OpenGaitLeg.stl", 
                     on_click = DownloadComplete
                 )
+            del st.session_state.stl_bytes
 
         except Exception as e:
             st.error("Model generation failed")
             st.code(traceback.format_exc())
             raise
+
+        
     
 
 PageContents()
@@ -318,6 +323,7 @@ st.write("finished pagecontents")
 BuildModel()
 st.write("finished BuildModel()")
 CheckDownloadStatus()
+
 
 
 
