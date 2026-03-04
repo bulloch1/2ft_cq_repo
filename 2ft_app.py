@@ -267,7 +267,7 @@ def GetShape():
         foot = AddPylon(foot)
         st.write("Adding pyramid adapter interface")
         foot = CutPyramidAdapter(foot)
-        St.badge("Model complete", color = "green")
+        st.badge("Model complete", color = "green")
         
         if (right == False):
             foot = foot.mirror("YZ")
@@ -323,6 +323,7 @@ def BuildModel():
 PageContents()
 BuildModel()
 CheckDownloadStatus()
+
 
 
 
