@@ -100,7 +100,7 @@ def GetShape():
     def getAdvancedMeasurements():
         predicted_pylon_radius = heel_radius #TODO make this reflect weight or proportional to given measurement
         predicted_ankle_height = foot_length*0.4 # height where foot meets pylon. Currently arbitrary. TODO? 
-        predicted_toe_height = foot_length*0.15 # Arbitrary
+        predicted_toe_height = foot_length*0.1 # Arbitrary
         predicted_pylon_offset = predicted_pylon_radius*1.2 #makes the back of the heel line up with the back of the pylon
         
         if (st.session_state.advanced_options):
@@ -313,6 +313,7 @@ def ExportSTL():
         )
 
 ExportSTL()
+
 
 
 
