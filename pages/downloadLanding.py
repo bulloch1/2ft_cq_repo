@@ -2,11 +2,13 @@ import streamlit as st
 
 st.set_page_config(initial_sidebar_state="collapsed")
 
+
+
 st.title("Download Successful!")
 st.divider()
 st.space("medium")
 
-left, right = st.columns(2)
+left, right = st.columns(2, gap = "large")
 
 left.header("Printing Your Leg - Next Steps:")
 left.space("small")
