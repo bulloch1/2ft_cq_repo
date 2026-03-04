@@ -14,7 +14,7 @@ def PageContents(): #collects and calculates all foot measurements
     #standard bounds in metric (mm, kg)
     foot_length_lb = 150
     foot_length_avg = 200
-    if foot_length not in st.session_state:
+    if "foot_length" not in st.session_state:
         st.session_state.foot_length = foot_length_avg
     foot_length_ub = 300
     
@@ -293,6 +293,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
