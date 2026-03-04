@@ -207,13 +207,14 @@ def GetShape():
     def AddPylon(foot):
         foot = (
             foot.faces(">Y")
-            .edges()
-            .toPending()
-            .offset2D(0)
-            .workplane(offset = pylon_height)
-            .center(0, pylon_offset)
-            .ellipse(pylon_radius, pylon_radius*1.2)
-            .loft(combine = True)
+            # .edges()
+            # .toPending()
+            # .offset2D(0)
+            # .workplane(offset = pylon_height)
+            # .center(0, pylon_offset)
+            # .ellipse(pylon_radius, pylon_radius*1.2)
+            # .loft(combine = True)
+            .extrude(pylon_height)
         )
         return foot
     
@@ -317,6 +318,7 @@ st.write("finished pagecontents")
 BuildModel()
 st.write("finished BuildModel()")
 CheckDownloadStatus()
+
 
 
 
