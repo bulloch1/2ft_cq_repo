@@ -5,6 +5,9 @@ import tempfile
 import os
 import traceback
 
+if "download_complete" not in st.session_state:
+    st.session_state.download_complete = False
+
 def PageContents(): #collects and calculates all foot measurements
     #title page elements
     st.title("OpenGait", text_alignment = "center")
@@ -271,7 +274,11 @@ def GetShape():
 #end of CadQuery script
 
 def DownloadComplete():
-    st.switch_page("pages/downloadLanding.py")
+    st.session_state.download_complete = True
+    
+def CheckDownloadStatus():
+    if st.session_state.download_complete:
+        st.switch_page("pages/downloadLanding.py")
 
 def BuildModel():
     if st.button("Generate File"):
@@ -303,6 +310,8 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+CheckDownloadStatus()
+
 
 
 
