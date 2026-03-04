@@ -193,9 +193,9 @@ def GetShape():
             .extrude(ankle_height)
             .cut(getArch())
             .combine()
-            # .faces("<<Y[1]")
-            # .edges("not |X")
-            # .chamfer(toe_height*0.4)
+            .faces("<<Y[1]")
+            .edges("not |X")
+            .chamfer(toe_height*0.4)
             # .faces("<<Y[2]")
             # .edges("not <<Y[1] or <<Y[0]")
             # .chamfer(toe_height*0.2)
@@ -323,6 +323,7 @@ st.write("finished pagecontents")
 BuildModel()
 st.write("finished BuildModel()")
 CheckDownloadStatus()
+
 
 
 
