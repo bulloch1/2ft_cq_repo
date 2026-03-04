@@ -8,7 +8,7 @@ import os
 # if "height" not in st.session_state:
 #     st.session_state.height = 150
 
-def PageContents():
+def PageContents(): #collects and calculates all foot measurements
     #title page elements
     st.title("OpenGait", text_alignment = "center")
     st.caption("The world's first fully customizable, downloadable prosthetic leg", text_alignment = "center")
@@ -59,26 +59,42 @@ def PageContents():
     st.slider("Weight (kg)", weight_lb, weight_ub, key = "weight")
     st.space("small")
 
-    #other
+    #predicted secondary values
+    avg_pr = st.session_state.foot_width * 0.3 #pylon radius #this value used to make the medial edge of the heel vertical (40% of foot wass medial, 60% was lateral)
+    avg_ah = st.session_state.foot_length * 0.4 #ankle height
+    avg_th = st.session_state.foot_length * 0.1 #toe height
+    avg_po = avg_pr * 1.2 #pylon offset
+    ub = 1.2 #upper bound coefficient
+    lb = 0.8 #lower bound coeffcient
+    
+    #optional advanced settings
+    if (st.session_state.advanced_options):
+        st.subheader("Advanced Measurements")
+        st.caption("Warning, some values may cause model to fail to build")
+        st.slider("Ankle radius", avg_pr*lb, avg_pr*ub, value = avg_pr, key = "pylon_radius")
+        st.slider("Ankle Height", avg_ah*lb, avg_ah*ub, value = avg_ah, key = "ankle_height")
+        st.slider("Toe height", avg_th*lb, avg_th*ub, value = avg_th, key = "toe_height")
+        st.slider("forward leg offset", avg_po*lb, avg_po*ub, value = avg_po, key = "pylon_offset")
+    else:
+        st.session_state.pylon_radius = avg_hr
+        st.session_state.ankle_height = avg_ah
+        st.session_state.toe_height = avg_th
+        st.session_state.pylon_offset = avg_po
+    
+    #other user-defined variables
     side = st.radio("Which foot?", ("Left", "Right"))
     st.session_state.right = (side == "Right")
     st.space("small")
 
-
+    #other calculated variables
+    st.session_state.pylon_height = st.session_state.height - st.session_state.ankle_height
+    st.session_state.toe_length = st.session_state.foot_length * 0.2
     
     # if not metric:
     #     st.session_state.foot_length / in_per_mm
     #     st.session_state.height / in_per_mm
     #     st.session_state.foot_width / in_per_mm
     #     st.session_state.weight / lb_per_kg
-
-    #for troubleshooting. Reflects what is in CQ
-    # weight = 20
-    # foot_length = 200
-    # foot_width = 72
-    # height = 130
-    # right = True
-    # advanced_options = False
 
     st.sidebar.toggle("Use advanced measurements", value = False, key = "advanced_options")
     st.sidebar.toggle("Use metric units (mm, kg)", value = True, key = "metric")
@@ -94,50 +110,21 @@ def PageContents():
     st.sidebar.text("Measure the distance from the plate of your pyramid adapter (at the base of your socket) to the ground")
     st.sidebar.space("small")
 
-    # return height, foot_length, foot_width, weight, right, advanced_options    
-
-def GetShape():
-    def getAdvancedMeasurements():
-        predicted_pylon_radius = heel_radius #TODO make this reflect weight or proportional to given measurement
-        predicted_ankle_height = foot_length*0.4 # height where foot meets pylon. Currently arbitrary. TODO? 
-        predicted_toe_height = foot_length*0.1 # Arbitrary
-        predicted_pylon_offset = predicted_pylon_radius*1.2 #makes the back of the heel line up with the back of the pylon
-        
-        if (st.session_state.advanced_options):
-            pylon_radius = st.slider("Ankle radius", predicted_pylon_radius * 0.8, predicted_pylon_radius * 1.2, value = predicted_pylon_radius)
-            ankle_height = st.slider("Ankle Height", predicted_ankle_height * 0.8, predicted_ankle_height * 1.2, value = predicted_ankle_height)
-            toe_height = st.slider("Toe height", predicted_toe_height * 0.8, predicted_toe_height*1.2, value = predicted_toe_height)
-            pylon_offest = st.slider("forward leg offset", predicted_pylon_offset * 0.8, predicted_pylon_offset * 1.2, value = predicted_pylon_offset)
-        else:
-            ankle_height = predicted_ankle_height
-            toe_height = predicted_toe_height
-            pylon_offset = predicted_pylon_offset
-            pylon_radius = predicted_pylon_radius
-
-        #for troubleshooting. This reflects what is in CQ
-        # pylon_radius = heel_radius #TODO make this reflect weight or proportional to given measurement
-        # ankle_height = foot_length*0.4 # height where foot meets pylon
-        # toe_height = foot_length*0.15
-        # pylon_offset = pylon_radius*1.2
-    
-        return ankle_height, toe_height, pylon_offset, pylon_radius
-
-    
+def GetShape():    
     height = st.session_state.height
     foot_length = st.session_state.foot_length
     foot_width = st.session_state.foot_width
     weight = st.session_state.weight
     right = st.session_state.right
-    
+    heel_radius = st.session_state.pylon_radius
+    ankle_height = st.session_state.ankle_height
+    toe_height = st.session_state.toe_height
+    pylon_offset = st.session_state.pylon_offset
+    pylon_radius = st.session_state.pylon_radius
+    pylon_height = st.session_state.pylon_height
+    toe_length = st.session_state.toe_length
     # Start of CadQuery script
     
-    height, foot_length, foot_width, weight, right, advanced_options = PageContents()
-    heel_radius = 0.3 * foot_width #this value makes the medial edge of the heel vertical (40% of foot is medial, 60% is lateral)
-    ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
-    pylon_height = height - ankle_height
-    # toe_length = 0.15 * foot_length #old value, may have helped with chamfer issues (less ointy toe curve) ,but less realistic
-    toe_length = 0.2 * foot_length
-     
     #pyramid adapter
     tolerance = 0.12
     base_plate_thickness = 4.1
@@ -294,8 +281,6 @@ def GetShape():
 #end of CadQuery script
 
 def ExportSTL():
-    PageContents()
-
     if st.button("Generate File"):
         result = GetShape()
 
@@ -315,7 +300,10 @@ def ExportSTL():
             "leg2.stl"
         )
 
+
+PageContents()
 ExportSTL()
+
 
 
 
