@@ -4,9 +4,7 @@ from cadquery import exporters
 import tempfile
 import os
 
-#global session state variables
-# if "height" not in st.session_state:
-#     st.session_state.height = 150
+
 
 def PageContents(): #collects and calculates all foot measurements
     #title page elements
@@ -15,28 +13,27 @@ def PageContents(): #collects and calculates all foot measurements
     st.divider()
     st.space("medium")
     
-#     #standard bounds in metric (mm, kg)
+    #standard bounds in metric (mm, kg)
     height_lb = 150
+    height_avg = 240
     height_ub = 400
+    
     foot_length_lb = 150
     foot_length_avg = 200
     foot_length_ub = 300
-    weight_lb = 20
-    weight_ub = 100
+    
     predicted_width_intercept = 17.3
+    width_avg = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
+    width_lb = int(width_avg * 0.85)
+    width_ub = int(width_avg * 1.4)
+    
+    weight_lb = 20
+    weight_avg = 70
+    weight_ub = 100
 
     #conversion factors
     in_per_mm = 1/25.4
     lb_per_kg = 2.20462
-    # if not metric:
-    #     height_lb = 150 * in_per_mm
-    #     height_ub = 400 * in_per_mm
-    #     foot_length_lb = 150 * in_per_mm
-    #     foot_length_avg = 200 * in_per_mm
-    #     foot_length_ub = 300 * in_per_mm
-    #     weight_lb = 20 * lb_per_kg
-    #     weight_ub = 100 * lb_per_kg
-    #     predicted_width_intercept = 17.3 * in_per_mm
     
     #VALUE PAGE ELEMENTS
     #length
@@ -45,18 +42,15 @@ def PageContents(): #collects and calculates all foot measurements
     
     #height
     height_lb = int(st.session_state.foot_length*0.5) #height must be greater than ankle height (foot_length*0.4)
-    st.slider("Limb Height (mm)", height_lb, height_ub, key = "height")
+    st.slider("Limb Height (mm)", height_lb, height_ub, value = height_avg, key = "height")
     st.space("small")
     
     #width
-    predicted_width = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
-    width_lb = int(predicted_width * 0.85)
-    width_ub = int(predicted_width * 1.4)
-    st.slider("Foot Width (mm)", width_lb, width_ub, value = predicted_width, key = "foot_width")
+    st.slider("Foot Width (mm)", width_lb, width_ub, value = width_avg, key = "foot_width")
     st.space("small")
 
     #weight
-    st.slider("Weight (kg)", weight_lb, weight_ub, key = "weight")
+    st.slider("Weight (kg)", weight_lb, weight_ub, value = weight_avg, key = "weight")
     st.space("small")
 
     #sidebar
@@ -104,14 +98,6 @@ def PageContents(): #collects and calculates all foot measurements
     #other calculated variables
     st.session_state.pylon_height = st.session_state.height - st.session_state.ankle_height
     st.session_state.toe_length = st.session_state.foot_length * 0.2
-    
-    # if not metric:
-    #     st.session_state.foot_length / in_per_mm
-    #     st.session_state.height / in_per_mm
-    #     st.session_state.foot_width / in_per_mm
-    #     st.session_state.weight / lb_per_kg
-
-    
 
 def GetShape():    
     height = st.session_state.height
@@ -284,7 +270,7 @@ def GetShape():
     
 #end of CadQuery script
 
-def ExportSTL():
+def BuildModel():
     if st.button("Generate File"):
         result = GetShape()
 
@@ -296,52 +282,17 @@ def ExportSTL():
             st.session_state.stl_bytes = f.read()
 
         os.unlink(tmp_path)
-
+        
     if "stl_bytes" in st.session_state:
         st.download_button(
             "Download STL",
             st.session_state.stl_bytes,
             "leg2.stl"
         )
+    
 
 PageContents()
-ExportSTL()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+BuildModel()
 
 
 
