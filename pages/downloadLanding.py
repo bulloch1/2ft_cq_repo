@@ -4,7 +4,7 @@ st.set_page_config(initial_sidebar_state="collapsed")
 
 
 
-st.title("Download Successful!")
+st.title("Download Successful!", text_alignment = "center")
 st.divider()
 st.space("medium")
 
