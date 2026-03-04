@@ -272,7 +272,7 @@ def GetShape():
 
 def BuildModel():
     if st.button("Generate File"):
-        st.switch_page("2ft_cq_repo/pages/downloadLanding.py")
+        st.switch_page("pages/downloadLanding.py")
         try:
             st.session_state.foot = GetShape()
 
@@ -303,6 +303,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
