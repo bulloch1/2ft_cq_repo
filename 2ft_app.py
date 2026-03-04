@@ -281,6 +281,7 @@ def GetShape():
     
     foot = AssembleFoot()
     return foot
+    
 #end of CadQuery script
 
 def ExportSTL():
@@ -303,9 +304,9 @@ def ExportSTL():
             "leg2.stl"
         )
 
-
 PageContents()
 ExportSTL()
+
 
 
 
