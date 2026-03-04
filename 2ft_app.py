@@ -272,6 +272,7 @@ def GetShape():
 
 def BuildModel():
     if st.button("Generate File"):
+        st.switch_page("downloadLanding.py")
         try:
             st.session_state.foot = GetShape()
 
@@ -302,6 +303,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
