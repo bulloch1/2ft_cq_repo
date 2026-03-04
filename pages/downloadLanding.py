@@ -8,7 +8,7 @@ st.title("Download Successful!", text_alignment = "center")
 st.divider()
 st.space("medium")
 
-left, right = st.columns(2, gap = "large")
+left, right = st.columns(2, gap = "large", border = True)
 
 left.header("Printing Your Leg - Next Steps:")
 left.space("small")
