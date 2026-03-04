@@ -1,4 +1,5 @@
 import streamlit as st
+import cadquery as cq
 from cadquery import exporters
 import tempfile
 import os
@@ -99,9 +100,7 @@ def PageContents(): #collects and calculates all foot measurements
     st.session_state.pylon_height = st.session_state.height - st.session_state.ankle_height
     st.session_state.toe_length = st.session_state.foot_length * 0.2
 
-def GetShape():    
-    import cadquery as cq
-    
+def GetShape():
     height = st.session_state.height
     foot_length = st.session_state.foot_length
     foot_width = st.session_state.foot_width
@@ -258,8 +257,8 @@ def GetShape():
     
     def AssembleFoot():
         foot = Foot()
-        foot = AddPylon(foot)
-        foot = CutPyramidAdapter(foot)
+        # foot = AddPylon(foot)
+        # foot = CutPyramidAdapter(foot)
         
         if (right == False):
             foot = foot.mirror("YZ")
@@ -302,6 +301,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
