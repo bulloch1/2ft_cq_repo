@@ -128,7 +128,7 @@ def GetShape():
     toe_vector = (1, -1)
      
     #defines footprint shape
-    big_toe_pt = (-0.1*heel_radius, foot_length)#
+    big_toe_pt = (0, foot_length)#
     little_toe_pt = (0.4*foot_width, foot_length*0.94)
     ball_y = 0.66*foot_length # y distance of the widest part of the foot, where foot_width is measured
     footprint_spline_pts = [
@@ -293,6 +293,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
