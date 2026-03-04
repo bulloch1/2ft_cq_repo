@@ -131,24 +131,28 @@ def GetShape():
     
     # Start of CadQuery script
     
-    heel_radius = 0.4 * foot_width #this value makes the medial edge of the heel vertical (40% of foot is medial, 60% is lateral)
+    height, foot_length, foot_width, weight, right, advanced_options = PageContents()
+    heel_radius = 0.3 * foot_width #this value makes the medial edge of the heel vertical (40% of foot is medial, 60% is lateral)
     ankle_height, toe_height, pylon_offset, pylon_radius = getAdvancedMeasurements()
-    
     pylon_height = height - ankle_height
-    toe_length = 0.14 * foot_length
+    # toe_length = 0.15 * foot_length #old value, may have helped with chamfer issues (less ointy toe curve) ,but less realistic
+    toe_length = 0.2 * foot_length
      
     #pyramid adapter
-    ball_base_radius = 47.8/2
-    ball_depth = 10.7
-    dove_depth = 11.1
-    dove_tail_width = 18.3
-    dove_base_width = 14
+    tolerance = 0.12
+    base_plate_thickness = 4.1
+    ball_base_radius = 40.9/2 + tolerance #this tolerance may be different since its a curve
+    ball_depth = 13.36 - base_plate_thickness + tolerance
+    dove_depth = 24.36 - ball_depth - base_plate_thickness
+    dove_tail_width = 16.26 + tolerance * 2
+    dove_base_width = 13.0 + tolerance * 2
     
     lateral_vector = (heel_radius - 0.6*foot_width, heel_radius - 0.66*foot_length)
-    toe_vector = (1, -0.6)
+    # toe_vector = (1, -0.6) #old value, seemed to help chamfer problems, but less realistic
+    toe_vector = (1, -1)
      
     #defines footprint shape
-    big_toe_pt = (-0.2*heel_radius, foot_length)#
+    big_toe_pt = (-0.1*heel_radius, foot_length)#
     little_toe_pt = (0.4*foot_width, foot_length*0.94)
     ball_y = 0.66*foot_length # y distance of the widest part of the foot, where foot_width is measured
     footprint_spline_pts = [
@@ -277,8 +281,8 @@ def GetShape():
     
     def AssembleFoot():
         foot = Foot()
-        # foot = AddPylon(foot)
-        # foot = CutPyramidAdapter(foot)
+        foot = AddPylon(foot)
+        foot = CutPyramidAdapter(foot)
         
         if (right == False):
             foot = foot.mirror("YZ")
@@ -287,7 +291,6 @@ def GetShape():
     
     foot = AssembleFoot()
     return foot
-
 #end of CadQuery script
 
 def ExportSTL():
@@ -313,6 +316,7 @@ def ExportSTL():
         )
 
 ExportSTL()
+
 
 
 
