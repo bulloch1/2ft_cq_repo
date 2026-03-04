@@ -284,15 +284,18 @@ def BuildModel():
         os.unlink(tmp_path)
         
     if "stl_bytes" in st.session_state:
-        st.download_button(
+        download = st.download_button(
             "Download STL",
             st.session_state.stl_bytes,
             "leg2.stl"
         )
+        if download:
+            st.switch_page("downloadLanding.py")
     
 
 PageContents()
 BuildModel()
+
 
 
 
