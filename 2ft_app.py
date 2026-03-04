@@ -193,12 +193,12 @@ def GetShape():
             .extrude(ankle_height)
             .cut(getArch())
             .combine()
-            .faces("<<Y[1]")
-            .edges("not |X")
-            .chamfer(toe_height*0.4)
-            .faces("<<Y[2]")
-            .edges("not <<Y[1] or <<Y[0]")
-            .chamfer(toe_height*0.2)
+            # .faces("<<Y[1]")
+            # .edges("not |X")
+            # .chamfer(toe_height*0.4)
+            # .faces("<<Y[2]")
+            # .edges("not <<Y[1] or <<Y[0]")
+            # .chamfer(toe_height*0.2)
             # .faces("<Y")
             # .chamfer(toe_height*0.1)
         )
@@ -224,8 +224,8 @@ def GetShape():
             cq.Workplane("right")
             .center(pylon_offset, pylon_height+ankle_height - base_height/2)
             .box(62, base_height, pylon_radius*2)
-            .edges("|Y")
-            .fillet(8)
+            # .edges("|Y")
+            # .fillet(8)
         )
         foot = foot.union(adapter_base)
         
@@ -250,10 +250,10 @@ def GetShape():
             adapter
             .mirror(adapter.faces(">Z"), union = True)
             .faces("<Y")
-            .chamfer(2)
-            .faces("<<Y[4]")
-            .edges("|X")
-            .chamfer(1)
+            # .chamfer(2)
+            # .faces("<<Y[4]")
+            # .edges("|X")
+            # .chamfer(1)
         )
         foot = foot.cut(adapter)
         return foot
@@ -262,10 +262,10 @@ def GetShape():
         st.write("starting Foot() ")
         foot = Foot()
         st.write("finished Foot()")
-        # foot = AddPylon(foot)
-        # st.write("finished pylon")
-        # foot = CutPyramidAdapter(foot)
-        # st.write("finished adapter")
+        foot = AddPylon(foot)
+        st.write("finished pylon")
+        foot = CutPyramidAdapter(foot)
+        st.write("finished adapter")
         
         if (right == False):
             foot = foot.mirror("YZ")
@@ -323,6 +323,7 @@ st.write("finished pagecontents")
 BuildModel()
 st.write("finished BuildModel()")
 CheckDownloadStatus()
+
 
 
 
