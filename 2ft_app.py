@@ -85,7 +85,7 @@ def PageContents(): #collects and calculates all foot measurements
     #optional advanced settings
     if (st.session_state.advanced_options):
         st.subheader("Advanced Measurements")
-        st.caption("Warning, some values may cause model to fail to build")
+        st.caption("Warning, changing these values may cause model to fail to build")
         st.slider("Ankle radius", avg_pr*lb, avg_pr*ub, value = avg_pr, key = "pylon_radius")
         st.slider("Ankle Height", avg_ah*lb, avg_ah*ub, value = avg_ah, key = "ankle_height")
         st.slider("Toe height", avg_th*lb, avg_th*ub, value = avg_th, key = "toe_height")
@@ -306,6 +306,7 @@ def ExportSTL():
 
 PageContents()
 ExportSTL()
+
 
 
 
