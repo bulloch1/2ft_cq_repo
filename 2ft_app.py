@@ -59,6 +59,21 @@ def PageContents(): #collects and calculates all foot measurements
     st.slider("Weight (kg)", weight_lb, weight_ub, key = "weight")
     st.space("small")
 
+    #sidebar
+    st.sidebar.toggle("Use advanced measurements", value = False, key = "advanced_options")
+    st.sidebar.toggle("Use metric units (mm, kg)", value = True, key = "metric")
+    st.sidebar.divider()
+    st.sidebar.header("Instructions")
+    st.sidebar.subheader("Foot Length")
+    st.sidebar.text("Measure the distance from the back of your heel to the tip of your big toe")
+    st.sidebar.space("small")
+    st.sidebar.subheader("Foot Width")
+    st.sidebar.text("Measure the width of your foot directly across at the widest point")
+    st.sidebar.space("small")
+    st.sidebar.subheader("Limb Height")
+    st.sidebar.text("Measure the distance from the plate of your pyramid adapter (at the base of your socket) to the ground")
+    st.sidebar.space("small")
+
     #predicted secondary values
     avg_pr = st.session_state.foot_width * 0.3 #pylon radius #this value used to make the medial edge of the heel vertical (40% of foot wass medial, 60% was lateral)
     avg_ah = st.session_state.foot_length * 0.4 #ankle height
@@ -96,19 +111,7 @@ def PageContents(): #collects and calculates all foot measurements
     #     st.session_state.foot_width / in_per_mm
     #     st.session_state.weight / lb_per_kg
 
-    st.sidebar.toggle("Use advanced measurements", value = False, key = "advanced_options")
-    st.sidebar.toggle("Use metric units (mm, kg)", value = True, key = "metric")
-    st.sidebar.divider()
-    st.sidebar.header("Instructions")
-    st.sidebar.subheader("Foot Length")
-    st.sidebar.text("Measure the distance from the back of your heel to the tip of your big toe")
-    st.sidebar.space("small")
-    st.sidebar.subheader("Foot Width")
-    st.sidebar.text("Measure the width of your foot directly across at the widest point")
-    st.sidebar.space("small")
-    st.sidebar.subheader("Limb Height")
-    st.sidebar.text("Measure the distance from the plate of your pyramid adapter (at the base of your socket) to the ground")
-    st.sidebar.space("small")
+    
 
 def GetShape():    
     height = st.session_state.height
@@ -303,6 +306,7 @@ def ExportSTL():
 
 PageContents()
 ExportSTL()
+
 
 
 
