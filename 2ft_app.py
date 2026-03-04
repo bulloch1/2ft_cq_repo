@@ -63,7 +63,7 @@ def PageContents(): #collects and calculates all foot measurements
     st.sidebar.toggle("Use advanced measurements", value = False, key = "advanced_options")
     st.sidebar.toggle("Use metric units (mm, kg)", value = True, key = "metric")
     st.sidebar.divider()
-    st.sidebar.header("Instructions")
+    st.sidebar.title("Instructions")
     st.sidebar.subheader("Foot Length")
     st.sidebar.text("Measure the distance from the back of your heel to the tip of your big toe")
     st.sidebar.space("small")
@@ -306,6 +306,7 @@ def ExportSTL():
 
 PageContents()
 ExportSTL()
+
 
 
 
