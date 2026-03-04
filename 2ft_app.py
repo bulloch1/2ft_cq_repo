@@ -75,7 +75,7 @@ def PageContents(): #collects and calculates all foot measurements
     avg_pr = st.session_state.foot_width * 0.3 #pylon radius #this value used to make the medial edge of the heel vertical (40% of foot wass medial, 60% was lateral)
     avg_ah = st.session_state.foot_length * 0.4 #ankle height
     avg_th = st.session_state.foot_length * 0.1 #toe height
-    avg_po = avg_pr * 1.2 #pylon offset
+    avg_po = avg_pr * 1.4 #pylon offset
     ub = 1.2 #upper bound coefficient
     lb = 0.8 #lower bound coeffcient
     
@@ -160,7 +160,7 @@ def GetShape():
     ]
     
     #defines top of foot
-    ankle_x = pylon_radius*2.4
+    ankle_x = pylon_radius*2.8
     ankle_point = (ankle_x, ankle_height) #end of the arch, where the front of the pylon will connect
     arch_spline_pts = [
         (foot_length, toe_height), 
@@ -323,6 +323,7 @@ def BuildModel():
 PageContents()
 BuildModel()
 CheckDownloadStatus()
+
 
 
 
