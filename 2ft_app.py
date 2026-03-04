@@ -259,8 +259,11 @@ def GetShape():
     
     def AssembleFoot():
         foot = Foot()
-        # foot = AddPylon(foot)
-        # foot = CutPyramidAdapter(foot)
+        st.write("finished Foot()")
+        foot = AddPylon(foot)
+        st.write("finished pylon")
+        foot = CutPyramidAdapter(foot)
+        st.write("finished adapter")
         
         if (right == False):
             foot = foot.mirror("YZ")
@@ -309,8 +312,11 @@ def BuildModel():
     
 
 PageContents()
+st.write("finished pagecontents")
 BuildModel()
+st.write("finished BuildModel()")
 CheckDownloadStatus()
+
 
 
 
