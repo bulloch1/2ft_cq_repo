@@ -13,7 +13,7 @@ left.space("small")
 left.subheader("Settings")
 left.markdown("print the foot upright, with __% infill and __ wall thickness. ___ layer height is recommended")
 left.space("small")
-left.header("Wearing Your New Leg)
+left.header("Wearing Your New Leg")
 left.markdown("Simply slide the leg tightly onto your pyramid adapter")
 
 right.header("Estimated Specs")
