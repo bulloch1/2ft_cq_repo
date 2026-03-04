@@ -283,15 +283,16 @@ def BuildModel():
                 st.session_state.stl_bytes = f.read()
     
             os.unlink(tmp_path)
-            
+
+            download = False
             if "stl_bytes" in st.session_state:
                 download = st.download_button(
                     "Download STL",
                     st.session_state.stl_bytes,
                     "OpenGaitLeg.stl"
                 )
-                if download:
-                    st.switch_page("downloadLanding.py")
+            if download:
+                st.switch_page("downloadLanding.py")
                 
         except Exception as e:
             st.error("Model generation failed")
@@ -301,6 +302,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
