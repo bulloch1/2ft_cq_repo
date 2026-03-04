@@ -272,7 +272,6 @@ def GetShape():
 
 def BuildModel():
     if st.button("Generate File"):
-        st.switch_page("pages/downloadLanding.py")
         try:
             st.session_state.foot = GetShape()
 
@@ -292,7 +291,8 @@ def BuildModel():
                     st.session_state.stl_bytes,
                     "OpenGaitLeg.stl"
                 )
-            # if download:
+            if download:
+                st.switch_page("pages/downloadLanding.py")
             #     st.switch_page("downloadLanding.py")
                 
         except Exception as e:
@@ -303,6 +303,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
