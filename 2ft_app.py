@@ -4,8 +4,6 @@ from cadquery import exporters
 import tempfile
 import os
 
-
-
 def PageContents(): #collects and calculates all foot measurements
     #title page elements
     st.title("OpenGait", text_alignment = "center")
@@ -14,18 +12,20 @@ def PageContents(): #collects and calculates all foot measurements
     st.space("medium")
     
     #standard bounds in metric (mm, kg)
-    height_lb = 150
-    height_avg = 240
-    height_ub = 400
-    
     foot_length_lb = 150
     foot_length_avg = 200
+    if foot_length not in st.session_state:
+        st.session_state.foot_length = foot_length_avg
     foot_length_ub = 300
     
     predicted_width_intercept = 17.3
     width_avg = int(0.32 * st.session_state.foot_length + predicted_width_intercept)
     width_lb = int(width_avg * 0.85)
     width_ub = int(width_avg * 1.4)
+    
+    height_lb = 150
+    height_avg = 240
+    height_ub = 400
     
     weight_lb = 20
     weight_avg = 70
@@ -293,6 +293,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
