@@ -3,6 +3,7 @@ import cadquery as cq
 from cadquery import exporters
 import tempfile
 import os
+import traceback
 
 def PageContents(): #collects and calculates all foot measurements
     #title page elements
@@ -190,7 +191,6 @@ def GetShape():
             .extrude(ankle_height)
             .cut(getArch())
             .combine()
-            .clean()
             .faces("<<Y[1]")
             .edges("not |X")
             .chamfer(toe_height*0.4)
@@ -272,29 +272,36 @@ def GetShape():
 
 def BuildModel():
     if st.button("Generate File"):
-        result = GetShape()
+        try:
+            st.session_state.foot = GetShape()
 
-        with tempfile.NamedTemporaryFile(suffix=".stl", delete=False) as tmp:
-            tmp_path = tmp.name
-            result.val().export(tmp_path)
-
-        with open(tmp_path, "rb") as f:
-            st.session_state.stl_bytes = f.read()
-
-        os.unlink(tmp_path)
-        
-    if "stl_bytes" in st.session_state:
-        download = st.download_button(
-            "Download STL",
-            st.session_state.stl_bytes,
-            "leg2.stl"
-        )
-        if download:
-            st.switch_page("downloadLanding.py")
+            with tempfile.NamedTemporaryFile(suffix=".stl", delete=False) as tmp:
+                tmp_path = tmp.name
+                st.session_state.foot.val().export(tmp_path)
+    
+            with open(tmp_path, "rb") as f:
+                st.session_state.stl_bytes = f.read()
+    
+            os.unlink(tmp_path)
+            
+            if "stl_bytes" in st.session_state:
+                download = st.download_button(
+                    "Download STL",
+                    st.session_state.stl_bytes,
+                    "OpenGaitLeg.stl"
+                )
+                if download:
+                    st.switch_page("downloadLanding.py")
+                
+        except Exception as e:
+            st.error("Model generation failed")
+            st.code(traceback.format_exc())
+            raise
     
 
 PageContents()
 BuildModel()
+
 
 
 
