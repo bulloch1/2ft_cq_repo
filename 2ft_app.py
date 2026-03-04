@@ -278,6 +278,7 @@ def DownloadComplete():
     
 def CheckDownloadStatus():
     if st.session_state.download_complete:
+        st.session_state.download_complete = False
         st.switch_page("pages/downloadLanding.py")
 
 def BuildModel():
@@ -311,6 +312,7 @@ def BuildModel():
 PageContents()
 BuildModel()
 CheckDownloadStatus()
+
 
 
 
