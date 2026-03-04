@@ -249,7 +249,7 @@ def GetShape():
         adapter = (
             adapter
             .mirror(adapter.faces(">Z"), union = True)
-            .faces("<Y")
+            # .faces("<Y")
             # .chamfer(2)
             # .faces("<<Y[4]")
             # .edges("|X")
@@ -323,6 +323,7 @@ st.write("finished pagecontents")
 BuildModel()
 st.write("finished BuildModel()")
 CheckDownloadStatus()
+
 
 
 
