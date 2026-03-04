@@ -76,7 +76,7 @@ def PageContents(): #collects and calculates all foot measurements
         st.slider("Toe height", avg_th*lb, avg_th*ub, value = avg_th, key = "toe_height")
         st.slider("forward leg offset", avg_po*lb, avg_po*ub, value = avg_po, key = "pylon_offset")
     else:
-        st.session_state.pylon_radius = avg_hr
+        st.session_state.pylon_radius = avg_pr
         st.session_state.ankle_height = avg_ah
         st.session_state.toe_height = avg_th
         st.session_state.pylon_offset = avg_po
@@ -303,6 +303,7 @@ def ExportSTL():
 
 PageContents()
 ExportSTL()
+
 
 
 
