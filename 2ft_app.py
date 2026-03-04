@@ -37,7 +37,7 @@ def PageContents(): #collects and calculates all foot measurements
     
     #VALUE PAGE ELEMENTS
     #length
-    st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, value = foot_length_avg, key = "foot_length")
+    st.slider("Foot Length (mm)", foot_length_lb, foot_length_ub, key = "foot_length") # starting value not defined here because st.session_State.foot_length is already defined
     st.space("small")
     
     #height
@@ -293,6 +293,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
