@@ -226,7 +226,7 @@ def GetShape():
             .edges("|Y")
             .fillet(8)
         )
-        foot = foot.union(adapter_base).clean()
+        foot = foot.union(adapter_base)
         
         adapter = (
             cq.Workplane("right")
@@ -249,15 +249,16 @@ def GetShape():
             adapter
             .mirror(adapter.faces(">Z"), union = True)
             .faces("<Y")
-            .fillet(2)
+            .chamfer(2)
             .faces("<<Y[4]")
             .edges("|X")
-            .fillet(1)
+            .chamfer(1)
         )
         foot = foot.cut(adapter)
         return foot
     
     def AssembleFoot():
+        st.write("starting Foot() ")
         foot = Foot()
         st.write("finished Foot()")
         foot = AddPylon(foot)
@@ -316,6 +317,7 @@ st.write("finished pagecontents")
 BuildModel()
 st.write("finished BuildModel()")
 CheckDownloadStatus()
+
 
 
 
