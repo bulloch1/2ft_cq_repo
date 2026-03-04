@@ -287,13 +287,12 @@ def BuildModel():
     
             os.unlink(tmp_path)
 
-            download = False
             if "stl_bytes" in st.session_state:
                 st.download_button(
                     "Download STL", 
                     st.session_state.stl_bytes, 
                     "OpenGaitLeg.stl", 
-                    on_click = DownloadComplete()
+                    on_click = DownloadComplete
                 )
 
         except Exception as e:
@@ -304,6 +303,7 @@ def BuildModel():
 
 PageContents()
 BuildModel()
+
 
 
 
