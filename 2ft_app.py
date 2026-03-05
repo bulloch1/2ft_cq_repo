@@ -4,6 +4,7 @@ from cadquery import exporters
 import tempfile
 import os
 import traceback
+import psutil
 
 if "download_complete" not in st.session_state:
     st.session_state.download_complete = False
@@ -332,6 +333,7 @@ def BuildModel():
 PageContents()
 BuildModel()
 CheckDownloadStatus()
+
 
 
 
