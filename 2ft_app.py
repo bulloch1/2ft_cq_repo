@@ -8,6 +8,12 @@ import traceback
 if "download_complete" not in st.session_state:
     st.session_state.download_complete = False
 
+def log_ram(label):
+    process = psutil.Process(os.getpid())
+    mem = process.memory_info().rss / (1024 ** 2)
+    print(f"{label}: {mem:.2f} MB")
+    st.write(f"{label}: {mem:.2f} MB")
+
 def PageContents(): #collects and calculates all foot measurements
     #title page elements
     st.title("OpenGait", text_alignment = "center")
@@ -264,10 +270,13 @@ def GetShape():
         st.write("Calculating footprint")
         foot = Foot()
         st.write("Forming ankle and leg")
+        log_ram("After Foot()")
         foot = AddPylon(foot)
         st.write("Adding pyramid adapter interface")
+        log_ram("After AddPylon")
         foot = CutPyramidAdapter(foot)
         st.badge("Model complete", color = "green")
+        log_ram("After CutPyramidAdapter")
         
         if (right == False):
             foot = foot.mirror("YZ")
@@ -323,6 +332,7 @@ def BuildModel():
 PageContents()
 BuildModel()
 CheckDownloadStatus()
+
 
 
 
