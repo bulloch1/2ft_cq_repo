@@ -8,6 +8,8 @@ import traceback
 
 if "download_complete" not in st.session_state:
     st.session_state.download_complete = False
+if "weight" not in st.session_state:
+    st.session_state.weight = 70.0
 
 # def log_ram(label):
 #     process = psutil.Process(os.getpid())
