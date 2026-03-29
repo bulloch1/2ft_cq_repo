@@ -1,8 +1,14 @@
 import streamlit as st
 
+weight = st.session_state("weight")
+t_w = 3
+
+
+suggested_infill = weight / 3.0
+
+estimated_volume_pla = t_w*()
+
 st.set_page_config(initial_sidebar_state="collapsed")
-
-
 
 st.title("Download Successful!", text_alignment = "center")
 st.divider()
