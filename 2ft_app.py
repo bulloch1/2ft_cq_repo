@@ -18,7 +18,7 @@ if "download_complete" not in st.session_state:
 def PageContents(): #collects and calculates all foot measurements
     #title page elements
     st.title("OpenGait", text_alignment = "center")
-    st.caption("The world's first fully customizable, downloadable prosthetic leg", text_alignment = "center")
+    st.caption("The world's first fully customizable, free-to-download prosthetic leg", text_alignment = "center")
     st.divider()
     st.space("medium")
     
