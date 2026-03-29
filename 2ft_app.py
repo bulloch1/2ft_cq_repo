@@ -291,6 +291,7 @@ def GetShape():
 
 def DownloadComplete():
     st.session_state.download_complete = True
+    st.rerun()
     
 def CheckDownloadStatus():
     if st.session_state.download_complete:
