@@ -4,7 +4,7 @@ import streamlit as st
 st.set_page_config(initial_sidebar_state="collapsed")
 
 # 2. Add safety checks for session state (in case user refreshes)
-if "weight" not in st.session_state:
+if "weight_copy" not in st.session_state:
     st.error("Please go back and enter your measurements first.")
     st.stop()
 
