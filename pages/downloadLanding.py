@@ -11,12 +11,12 @@ if "weight" not in st.session_state:
 pi = 3.141592
 
 # Pulling from session state
-weight = st.session_state.weight
-pylon_radius = st.session_state.pylon_radius
-pylon_height = st.session_state.pylon_height
-ankle_height = st.session_state.ankle_height
-foot_length = st.session_state.foot_length
-foot_width = st.session_state.foot_width
+weight = st.session_state.weight_copy
+pylon_radius = st.session_state.pylon_radius_copy
+pylon_height = st.session_state.pylon_height_copy
+ankle_height = st.session_state.ankle_height_copy
+foot_length = st.session_state.foot_length_copy
+foot_width = st.session_state.foot_width_copy
 
 t_w = 3 #mm
 cost_per_kg_pla = 20
