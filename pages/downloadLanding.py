@@ -54,9 +54,9 @@ with left:
 with right_col:
     st.header("Estimated Specs")
     st.markdown(f"**Mass:** {(estimated_mass / 1000):.2f} kg")
-    st.markdown(f"**Material Cost:** ${estimated_cost:.2f} (PLA)")
-    st.markdown("**Avg. Prosthesis Cost:** $5,000")
-    st.success(f"**Estimated Savings:** ${estimated_savings_dollars:,.2f} ({estimated_savings_percent:.1f}%)")
+    st.markdown(f"**Material cost:** ${estimated_cost:.2f} (PLA)")
+    st.markdown("**Average cost of a transtibial prosthesis:** $5,000")
+    st.success(f"**Estimated savings:** ${estimated_savings_dollars:,.2f} ({estimated_savings_percent:.1f}%)")
 
 if st.button("Back to Home Page"):
     st.switch_page("2ft_app.py")
