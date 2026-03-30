@@ -298,6 +298,12 @@ def DownloadComplete():
 def CheckDownloadStatus():
     if st.session_state.download_complete:
         st.session_state.download_complete = False
+        st.session_state.weight_copy = st.session_state.weight
+        st.session_state.pylon_radius_copy = st.session_state.pylon_radius
+        st.session_state.pylon_height_copy = st.session_state.pylon_height
+        st.session_state.ankle_height_copy = st.session_state.ankle_height
+        st.session_state.foot_length_copy = st.session_state.foot_length
+        st.session_state.foot_width_copy = st.session_state.foot_width
         st.switch_page("pages/downloadLanding.py")
 
 def BuildModel():
