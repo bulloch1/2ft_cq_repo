@@ -292,8 +292,8 @@ def GetShape():
 #end of CadQuery script
 
 def DownloadComplete():
-    st.session_state.download_complete = True
-    st.rerun()
+    if "weight" in st.session_state:
+        st.session_state.download_complete = True
     
 def CheckDownloadStatus():
     if st.session_state.download_complete:
