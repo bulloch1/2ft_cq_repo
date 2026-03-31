@@ -9,11 +9,6 @@ import traceback
 if "download_complete" not in st.session_state:
     st.session_state.download_complete = False
 
-# def log_ram(label):
-#     process = psutil.Process(os.getpid())
-#     mem = process.memory_info().rss / (1024 ** 2)
-#     print(f"{label}: {mem:.2f} MB")
-#     st.write(f"{label}: {mem:.2f} MB")
 
 def PageContents(): #collects and calculates all foot measurements
     #title page elements
@@ -124,169 +119,7 @@ def GetShape():
     toe_length = st.session_state.toe_length
     # Start of CadQuery script
     
-    # #pyramid adapter
-    # tolerance = 0.12
-    # base_plate_thickness = 4.1
-    # base_plate_width = 54.37
-    # ball_base_radius = 40.9/2 + tolerance #this tolerance may be different since its a curve
-    # ball_depth = 13.36 - base_plate_thickness + tolerance
-    # dove_depth = 24.36 - ball_depth - base_plate_thickness
-    # dove_tail_width = 16.26 + tolerance * 2
-    # dove_base_width = 13.0 + tolerance * 2
-    
-    # lateral_vector = (heel_radius - 0.6*foot_width, heel_radius - 0.66*foot_length)
-    # # toe_vector = (1, -0.6) #old value, seemed to help chamfer problems, but less realistic
-    # toe_vector = (1, -1)
-     
-    # #defines footprint shape
-    # big_toe_pt = (0, foot_length)#
-    # little_toe_pt = (0.4*foot_width, foot_length*0.94)
-    # ball_y = 0.66*foot_length # y distance of the widest part of the foot, where foot_width is measured
-    # footprint_spline_pts = [
-    #     (0, 0),#base of heel
-    #     (-heel_radius, heel_radius), #left side
-    #     (-heel_radius, foot_length - (toe_length)),#connects medial edge to big toe
-    #     (big_toe_pt),
-    #     (little_toe_pt),
-    #     (0.6*foot_width, ball_y), #TODO make right side end exactly at foot_width*0.6
-    #     (heel_radius, heel_radius), #right side of heel
-    #     (0.5*heel_radius, 0.2*heel_radius),
-    #     (0, 0),#back to starting pt
-    # ]
-    
-    # footprint_tangents = [
-    #     (-1, 0), #back of heel is horizontal
-    #     (0, 1), #tangent with medial edge
-    #     (0, 1),
-    #     (1, 0),#toe must be horizontal at foot_length
-    #     (toe_vector),
-    #     (lateral_vector),
-    #     (lateral_vector), #forces tangecy with right (lateral) edge of foot
-    #     (None),
-    #     (-1, 0)
-    # ]
-    
-    # #defines top of foot
-    # ankle_x = pylon_radius*2.8
-    # ankle_point = (ankle_x, ankle_height) #end of the arch, where the front of the pylon will connect
-    # arch_spline_pts = [
-    #     (foot_length, toe_height), 
-    #     (ball_y, toe_height+((ankle_height-toe_height)*0.2)), #((55% between ankle and toe), (12% between toe height and ankle height))
-    #     (ankle_point) 
-    # ]
-    
-    # arch_tangents = [
-    #     (-1, 0),
-    #     (None),
-    #     (-0.4, 1),
-    # ]
-    
-    # def getArch():
-    #     arch = (
-    #         cq.Workplane("right")
-    #         .workplane(offset = -0.4*foot_width)
-    #         .spline(arch_spline_pts, arch_tangents)
-    #         .lineTo(foot_length*2, ankle_height)
-    #         .lineTo(foot_length*2, toe_height)
-    #         .close()
-    #         .extrude(foot_width*2)
-    #     )
-    #     return arch
-    
-    # def Foot():
-    #     foot = (
-    #         cq.Workplane("top")
-    #         .spline(footprint_spline_pts, footprint_tangents)
-    #         .close()
-    #         .extrude(ankle_height)
-    #         .cut(getArch())
-    #         .combine()
-    #         .faces("<<Y[1]")
-    #         .edges("not |X")
-    #         .chamfer(toe_height*0.4)
-    #         # .faces("<<Y[2]")
-    #         # .edges("not <<Y[1] or <<Y[0]")
-    #         # .chamfer(toe_height*0.2)
-    #         # .faces("<Y")
-    #         # .chamfer(toe_height*0.1)
-    #     )
-    #     return foot
-    
-    # def AddPylon(foot):
-    #     foot = (
-    #         foot.faces(">Y")
-    #         # .edges()
-    #         # .toPending()
-    #         # .offset2D(0)
-    #         # .workplane(offset = pylon_height)
-    #         # .center(0, pylon_offset)
-    #         # .ellipse(pylon_radius, pylon_radius*1.2)
-    #         # .loft(combine = True)
-    #         .extrude(pylon_height)
-    #     )
-    #     return foot
-    
-    # def CutPyramidAdapter(foot):
-    #     base_height = 8
-    #     adapter_base = (
-    #         cq.Workplane("right")
-    #         .center(pylon_offset, pylon_height+ankle_height - base_height/2)
-    #         .box(base_plate_width, base_height, base_plate_width)
-    #         # .edges("|Y")
-    #         # .fillet(8)
-    #     )
-    #     foot = foot.union(adapter_base)
-        
-    #     adapter = (
-    #         cq.Workplane("right")
-    #         .center(pylon_offset, pylon_height+ankle_height)
-    #         .lineTo(24, 0) # build ball joint profile
-    #         .threePointArc((17, -7.5), (11.4, -10.8))
-    #         .lineTo(0, -10.8)
-    #         .close()
-    #         .revolve(90, (0, 0), (0, -1)) #revolve ball joint
-    #         .center(0, -ball_depth)
-    #         .lineTo(dove_base_width/2, 0)#dove tail outline
-    #         .lineTo(dove_tail_width/2, -dove_depth)
-    #         .lineTo(0, -dove_depth)
-    #         .close()
-    #         .extrude(dove_base_width/2)
-    #         .faces("<X")
-    #         .extrude(-pylon_radius - base_plate_width)
-    #     )
-    #     adapter = (
-    #         adapter
-    #         .mirror(adapter.faces(">Z"), union = True)
-    #         # .faces("<Y")
-    #         # .chamfer(2)
-    #         # .faces("<<Y[4]")
-    #         # .edges("|X")
-    #         # .chamfer(1)
-    #     )
-    #     foot = foot.cut(adapter)
-    #     return foot
-    #     # return adapter
-    
-    # def AssembleFoot():
-    #     st.write("Calculating footprint")
-    #     foot = Foot()
-    #     st.write("Forming ankle and leg")
-    #     # log_ram("After Foot()")
-    #     foot = AddPylon(foot)
-    #     st.write("Adding pyramid adapter interface")
-    #     # log_ram("After AddPylon")
-    #     foot = CutPyramidAdapter(foot)
-    #     st.badge("Model complete", color = "green")
-    #     # log_ram("After CutPyramidAdapter")
-        
-    #     if (right == False):
-    #         foot = foot.mirror("YZ")
-        
-    #     return foot
-    
-    # foot = AssembleFoot()
-    # return foot
-#pyramid adapter
+    #pyramid adapter
     tolerance = 0.12
     base_plate_thickness = 4.1
     base_plate_width = 54.37
@@ -444,6 +277,7 @@ def GetShape():
         foot = AddPylon(foot)
         st.write("Adding pyramid adapter interface")
         foot = CutPyramidAdapter(foot)
+        foot = foot.cut(getBall())
         st.badge("Model complete", color = "green")
         
         if (right == False):
