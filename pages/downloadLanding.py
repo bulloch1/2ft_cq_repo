@@ -44,6 +44,7 @@ with left:
     st.header("Printing Your Leg")
     st.subheader("Slicer")
     st.markdown("We recommend **Cura**.")
+    st.page_link("https://curaslicer.com/#download-cura-slicer", label="Download Cura", icon="external-link")
     st.subheader("Settings")
     # Using f-strings to prevent TypeErrors
     st.markdown(f"Print the foot upright, with **{suggested_infill:.1f}%** infill and **{t_w}mm** wall thickness.")
