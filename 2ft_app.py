@@ -438,10 +438,13 @@ def GetShape():
         # return adapter
     
     def AssembleFoot():
+        st.write("Calculating footprint")
         foot = Foot()
+        st.write("Forming ankle and leg")
         foot = AddPylon(foot)
+        st.write("Adding pyramid adapter interface")
         foot = CutPyramidAdapter(foot)
-        foot = foot.cut(getBall())
+        st.badge("Model complete", color = "green")
         
         if (right == False):
             foot = foot.mirror("YZ")
