@@ -124,13 +124,12 @@ def GetShape():
     base_plate_thickness = 4.1
     base_plate_width = 54.37
     ball_base_radius = 38/2 + tolerance #this tolerance may be different since its a curve
-    ball_depth = 9.2 - base_plate_thickness + tolerance
-    dove_depth = 10.7 + tolerance
+    dove_depth = 10.7 + tolerance + 1.7
+    ball_depth = 19.94 - dove_depth + tolerance
     dove_tail_width = 17.2 + tolerance * 2
     dove_base_width = 13.0 + tolerance * 2
     
     lateral_vector = (heel_radius - 0.6*foot_width, heel_radius - 0.66*foot_length)
-    # toe_vector = (1, -0.6) #old value, seemed to help chamfer problems, but less realistic
     toe_vector = (1, -1)
      
     #defines footprint shape
@@ -184,7 +183,7 @@ def GetShape():
     ]
     
     ball_tangents = [
-        (None),
+        (-1,-0.2),
         (-1,0),
         (-1,0),
         (None)
@@ -260,7 +259,7 @@ def GetShape():
             .close()
             .extrude(dove_base_width/2)
             .faces("<X")
-            .extrude(-base_plate_width - pylon_radius)
+            .extrude(-pylon_radius - base_plate_width)
         )
         adapter = (
             adapter
